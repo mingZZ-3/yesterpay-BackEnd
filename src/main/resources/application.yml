@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/yesterpay
-    username: user
-    password: 12345678
+    url: jdbc:mysql://3.34.102.55:3306/yesterpay
+    username: kb
+    password: kb1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 #log4j ?? / ?? ??
