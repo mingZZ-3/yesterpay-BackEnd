@@ -28,7 +28,7 @@ public class MemberController {
         return ResponseEntity.ok().body(memberId);
     }
 
-    @GetMapping("/member/{id}/letter-list")
+    @GetMapping("/member/{id}/letter")
     public ResponseEntity<List<Character>> letterCollection(@PathVariable("id") Long memberId) {
         List<Character> letterList = memberService.getLetterList(memberId);
         return ResponseEntity.ok().body(letterList);
