@@ -1,12 +1,8 @@
 package com.yesterpay.member.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter @Setter
 public class Member {
     private Long memberId;
     private String id;
