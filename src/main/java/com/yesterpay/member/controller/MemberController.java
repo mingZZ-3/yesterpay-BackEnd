@@ -19,4 +19,10 @@ public class MemberController {
         Member member = memberService.findOne(memberId);
         return ResponseEntity.ok().body(member);
     }
+
+    @PostMapping("/member/login")
+    public ResponseEntity<Member> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+        Member member = memberService.findOneByIdAndPw(loginRequestDTO);
+        return ResponseEntity.ok().body(member);
+    }
 }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Member {
-    private Long memberId;
+    private long memberId;
     private String id;
     private String pw;
     private Integer point;
@@ -16,7 +16,7 @@ public class Member {
     private String imgUrl;
     private String nickName;
     private String title;
-    private Long bingoBoardId;
-    private Long puzzleTeamId;
-    private Long bingoMissionId;
+    private long bingoBoardId;
+    private long puzzleTeamId;
+    private long bingoMissionId;
 }

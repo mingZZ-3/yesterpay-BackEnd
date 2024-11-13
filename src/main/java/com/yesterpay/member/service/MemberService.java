@@ -1,5 +1,6 @@
 package com.yesterpay.member.service;
 
+import com.yesterpay.member.dto.LoginRequestDTO;
 import com.yesterpay.member.dto.Member;
 import com.yesterpay.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,11 @@ public class MemberService {
 
     public Member findOne(Long memberId) {
         Member member = memberMapper.selectOne(memberId);
+        return member;
+    }
+
+    public Member findOneByIdAndPw(LoginRequestDTO loginRequestDTO) {
+        Member member = memberMapper.selectOneByIdAndPw(loginRequestDTO);
         return member;
     }
 
