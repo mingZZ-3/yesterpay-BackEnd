@@ -4,15 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.yesterpay.member.mapper.MemberMapper">
-    <select id="selectOne" parameterType="long" resultType="com.yesterpay.member.dto.Member">
+    <select id="selectOne" resultType="com.yesterpay.member.dto.Member">
         select *
         from member
         where member_id = #{memberId}
     </select>
 
-    <select id="selectOneByIdAndPw" parameterType="com.yesterpay.member.dto.LoginRequestDTO" resultType="com.yesterpay.member.dto.Member">
-        select *
+    <select id="selectOneByIdAndPw" parameterType="com.yesterpay.member.dto.LoginRequestDTO" resultType="java.lang.Long">
+        select member_id
         from member
         where id = #{id} and pw = #{pw}
     </select>
+
+    <select id="selectLetterList" resultType="java.lang.Character">
+        select hl.letter
+        from letter_collection lc
+        join hidden_letter hl on lc.hidden_letter_id = hl.hidden_letter_id
+        where lc.member_id = #{memberId}
+    </select>
+
 </mapper>

@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -21,9 +23,14 @@ public class MemberService {
         return member;
     }
 
-    public Member findOneByIdAndPw(LoginRequestDTO loginRequestDTO) {
-        Member member = memberMapper.selectOneByIdAndPw(loginRequestDTO);
-        return member;
+    public Long findOneByIdAndPw(LoginRequestDTO loginRequestDTO) {
+        Long memberId = memberMapper.selectOneByIdAndPw(loginRequestDTO);
+        return memberId;
+    }
+
+    public List<Character> getLetterList(Long memberId) {
+        List<Character> letterList = memberMapper.selectLetterList(memberId);
+        return letterList;
     }
 
 }

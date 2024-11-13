@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +23,17 @@ public class MemberController {
     }
 
     @PostMapping("/member/login")
-    public ResponseEntity<Member> login(@RequestBody LoginRequestDTO loginRequestDTO) {
-        Member member = memberService.findOneByIdAndPw(loginRequestDTO);
-        return ResponseEntity.ok().body(member);
+    public ResponseEntity<Long> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+        Long memberId = memberService.findOneByIdAndPw(loginRequestDTO);
+        return ResponseEntity.ok().body(memberId);
     }
+
+    @GetMapping("/member/{id}/letter-list")
+    public ResponseEntity<List<Character>> letterCollection(@PathVariable("id") Long memberId) {
+        List<Character> letterList = memberService.getLetterList(memberId);
+        return ResponseEntity.ok().body(letterList);
+    }
+
+
+
 }
