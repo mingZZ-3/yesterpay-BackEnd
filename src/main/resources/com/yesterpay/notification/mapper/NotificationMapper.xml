@@ -7,7 +7,13 @@
     <select id="selectUnreadNotificationCount" resultType="java.lang.Integer">
         select count(*)
         from notification
-        where is_read = false;
+        where is_read = false and member_id = #{memberId}
+    </select>
+
+    <select id="selectNotificationList" resultType="com.yesterpay.notification.dto.Notification">
+        select *
+        from notification
+        where member_id = #{memberId}
     </select>
 
 
