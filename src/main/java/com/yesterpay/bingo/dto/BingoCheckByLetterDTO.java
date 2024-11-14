@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class BingoCheckByMissionRequestDTO {
+public class BingoCheckByLetterDTO {
     private long memberId;
-    private int index;
+    private char letter;
 }

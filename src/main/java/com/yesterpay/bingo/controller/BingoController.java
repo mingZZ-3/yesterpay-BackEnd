@@ -1,7 +1,7 @@
 package com.yesterpay.bingo.controller;
 
 import com.yesterpay.bingo.dto.BingoCellDTO;
-import com.yesterpay.bingo.dto.BingoCheckByMissionRequestDTO;
+import com.yesterpay.bingo.dto.BingoCheckByIndexDTO;
 import com.yesterpay.bingo.dto.BingoStatusResponseDTO;
 import com.yesterpay.bingo.service.BingoService;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +30,9 @@ public class BingoController {
         return ResponseEntity.ok(bingoStatus);
     }
 
-    @PostMapping("/bingo/check/by-mission")
-    public ResponseEntity<BingoCellDTO> bingoCheckByMission(@RequestBody BingoCheckByMissionRequestDTO bingoCheckByMissionRequestDTO) {
-        BingoCellDTO updatedBingoCell = bingoService.checkBingoByMission(bingoCheckByMissionRequestDTO);
+    @PostMapping("/bingo/mission/success")
+    public ResponseEntity<BingoCellDTO> missionSuccess(@RequestBody BingoCheckByIndexDTO bingoCheckByIndexDTO) {
+        BingoCellDTO updatedBingoCell = bingoService.checkBingoByIndex(bingoCheckByIndexDTO);
         return ResponseEntity.ok(updatedBingoCell);
     }
 }

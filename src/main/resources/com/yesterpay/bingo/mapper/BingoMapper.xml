@@ -20,7 +20,7 @@
         where m.member_id = #{memberId};
     </select>
 
-    <update id="updateBingoCellByIndex" parameterType="com.yesterpay.bingo.dto.BingoCheckByMissionRequestDTO">
+    <update id="updateBingoCellByIndex" parameterType="com.yesterpay.bingo.dto.BingoCheckByIndexDTO">
         UPDATE bingo_letter_status bls
             JOIN bingo_letter bl ON bls.bingo_letter_id = bl.bingo_letter_id
             JOIN member m ON m.bingo_board_id = bl.bingo_board_id
@@ -28,7 +28,7 @@
         WHERE m.member_id = #{memberId} AND bl.index = #{index}
     </update>
 
-    <update id="updateBingoCellByLetter">
+    <update id="updateBingoCellByLetter" parameterType="com.yesterpay.bingo.dto.BingoCheckByLetterDTO">
         UPDATE bingo_letter_status bls
             JOIN bingo_letter bl ON bls.bingo_letter_id = bl.bingo_letter_id
             JOIN member m ON m.bingo_board_id = bl.bingo_board_id

@@ -1,7 +1,8 @@
 package com.yesterpay.bingo.service;
 
 import com.yesterpay.bingo.dto.BingoCellDTO;
-import com.yesterpay.bingo.dto.BingoCheckByMissionRequestDTO;
+import com.yesterpay.bingo.dto.BingoCheckByIndexDTO;
+import com.yesterpay.bingo.dto.BingoCheckByLetterDTO;
 import com.yesterpay.bingo.dto.BingoStatusResponseDTO;
 import com.yesterpay.bingo.mapper.BingoMapper;
 import lombok.RequiredArgsConstructor;
@@ -29,15 +30,17 @@ public class BingoService {
         return bingoStatus;
     }
 
+    // 빙고 미션 성공 시에, 미션이 있던 위치(index)를 받아서 빙고칸을 체크함
     @Transactional
-    public BingoCellDTO checkBingoByMission(BingoCheckByMissionRequestDTO bingoCheckByMissionRequestDTO) {
-        bingoMapper.updateBingoCellByIndex(bingoCheckByMissionRequestDTO);
-        BingoCellDTO updatedBingoCell = bingoMapper.selectBingoCell(bingoCheckByMissionRequestDTO.getMemberId(), bingoCheckByMissionRequestDTO.getIndex());
+    public BingoCellDTO checkBingoByIndex(BingoCheckByIndexDTO bingoCheckByIndexDTO) {
+        bingoMapper.updateBingoCellByIndex(bingoCheckByIndexDTO);
+        BingoCellDTO updatedBingoCell = bingoMapper.selectBingoCell(bingoCheckByIndexDTO.getMemberId(), bingoCheckByIndexDTO.getIndex());
         return updatedBingoCell;
     }
 
+    // 글자를 얻은 경우, 해당 글자와 일치하는 빙고칸을 체크함
     @Transactional
-    public void checkBingoByLetter(long memberId, char letter) {
-        bingoMapper.updateBingoCellByLetter(memberId, letter);
+    public void checkBingoByLetter(BingoCheckByLetterDTO bingoCheckByLetterDTO) {
+        bingoMapper.updateBingoCellByLetter(bingoCheckByLetterDTO);
     }
 }
