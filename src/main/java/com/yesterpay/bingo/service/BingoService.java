@@ -1,6 +1,6 @@
 package com.yesterpay.bingo.service;
 
-import com.yesterpay.bingo.dto.BingoBoardResponseDTO;
+import com.yesterpay.bingo.dto.BingoResponseDTO;
 import com.yesterpay.bingo.dto.BingoStatusResponseDTO;
 import com.yesterpay.bingo.mapper.BingoMapper;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +18,8 @@ public class BingoService {
 
     private final BingoMapper bingoMapper;
 
-    public List<BingoBoardResponseDTO> getBingoBoard(Long memberId) {
-        List<BingoBoardResponseDTO> bingoBoard = bingoMapper.selectBingoBoard(memberId);
+    public List<BingoResponseDTO> getBingoBoard(Long memberId) {
+        List<BingoResponseDTO> bingoBoard = bingoMapper.selectBingoBoard(memberId);
         return bingoBoard;
     }
 
