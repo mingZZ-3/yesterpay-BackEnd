@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.yesterpay.bingo.mapper.BingoMapper">
-    <select id="selectBingoBoard" resultType="com.yesterpay.bingo.dto.BingoResponseDTO">
+    <select id="selectBingoBoard" resultType="com.yesterpay.bingo.dto.BingoCellResponseDTO">
         select bl.bingo_letter_id, bl.index, bl.letter, bls.is_check
         from bingo_letter bl
                 join bingo_letter_status bls on bl.bingo_letter_id = bls.bingo_letter_id

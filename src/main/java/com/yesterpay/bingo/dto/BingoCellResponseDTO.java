@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class BingoResponseDTO {
+public class BingoCellResponseDTO {
     private Long bingoLetterId;
     private Integer index;
     private Character letter;
