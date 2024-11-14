@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class BingoLetterStatus {
-    private Long bingoStatusId;
-    private Long memberId;
+public class BingoCellDTO {
     private Long bingoLetterId;
+    private Integer index;
+    private Character letter;
     private Boolean isCheck;
 }

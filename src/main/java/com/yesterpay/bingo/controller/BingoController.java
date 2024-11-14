@@ -1,14 +1,13 @@
 package com.yesterpay.bingo.controller;
 
-import com.yesterpay.bingo.dto.BingoCellResponseDTO;
+import com.yesterpay.bingo.dto.BingoCellDTO;
+import com.yesterpay.bingo.dto.BingoCheckByMissionRequestDTO;
 import com.yesterpay.bingo.dto.BingoStatusResponseDTO;
 import com.yesterpay.bingo.service.BingoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,8 +19,8 @@ public class BingoController {
     private final BingoService bingoService;
 
     @GetMapping("/bingo/board")
-    public ResponseEntity<List<BingoCellResponseDTO>> bingoBoard(@RequestParam Long memberId) {
-        List<BingoCellResponseDTO> bingoBoard = bingoService.getBingoBoard(memberId);
+    public ResponseEntity<List<BingoCellDTO>> bingoBoard(@RequestParam Long memberId) {
+        List<BingoCellDTO> bingoBoard = bingoService.getBingoBoard(memberId);
         return ResponseEntity.ok(bingoBoard);
     }
 
@@ -31,4 +30,9 @@ public class BingoController {
         return ResponseEntity.ok(bingoStatus);
     }
 
+    @PostMapping("/bingo/check/by-mission")
+    public ResponseEntity<BingoCellDTO> bingoCheckByMission(@RequestBody BingoCheckByMissionRequestDTO bingoCheckByMissionRequestDTO) {
+        BingoCellDTO updatedBingoCell = bingoService.checkBingoByMission(bingoCheckByMissionRequestDTO);
+        return ResponseEntity.ok(updatedBingoCell);
+    }
 }

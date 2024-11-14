@@ -1,6 +1,7 @@
 package com.yesterpay.bingo.service;
 
-import com.yesterpay.bingo.dto.BingoCellResponseDTO;
+import com.yesterpay.bingo.dto.BingoCellDTO;
+import com.yesterpay.bingo.dto.BingoCheckByMissionRequestDTO;
 import com.yesterpay.bingo.dto.BingoStatusResponseDTO;
 import com.yesterpay.bingo.mapper.BingoMapper;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +19,20 @@ public class BingoService {
 
     private final BingoMapper bingoMapper;
 
-    public List<BingoCellResponseDTO> getBingoBoard(Long memberId) {
-        List<BingoCellResponseDTO> bingoBoard = bingoMapper.selectBingoBoard(memberId);
+    public List<BingoCellDTO> getBingoBoard(Long memberId) {
+        List<BingoCellDTO> bingoBoard = bingoMapper.selectBingoBoard(memberId);
         return bingoBoard;
     }
 
     public BingoStatusResponseDTO getBingoStatus(Long memberId) {
         BingoStatusResponseDTO bingoStatus = bingoMapper.selectBingoStatus(memberId);
         return bingoStatus;
+    }
+
+    @Transactional
+    public BingoCellDTO checkBingoByMission(BingoCheckByMissionRequestDTO bingoCheckByMissionRequestDTO) {
+        bingoMapper.updateBingoCellByIndex(bingoCheckByMissionRequestDTO);
+        BingoCellDTO updatedBingoCell = bingoMapper.selectBingoCell(bingoCheckByMissionRequestDTO.getMemberId(), bingoCheckByMissionRequestDTO.getIndex());
+        return updatedBingoCell;
     }
 }
