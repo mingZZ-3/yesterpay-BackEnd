@@ -24,6 +24,7 @@
             m.member_id,
             m.nick_name,
             m.img_url,
+            m.title,
             (SELECT GROUP_CONCAT(hl.letter)
              FROM hidden_letter AS hl
                       JOIN letter_collection AS lc ON lc.hidden_letter_id = hl.hidden_letter_id

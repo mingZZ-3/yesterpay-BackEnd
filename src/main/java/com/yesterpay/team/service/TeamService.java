@@ -19,7 +19,12 @@ public class TeamService {
     private final TeamMapper mapper;
 
     public List<Team> selectAll() {
-        return mapper.selectAll();
+        List<Team> teamList = mapper.selectAll();
+
+        for (Team team : teamList) {
+            team.setMemberList(selectMembersByTeamId(team.getPuzzleTeamId(), team.getMemberId()));
+        }
+        return teamList;
     }
 
     public Team selectById(Long teamID) {
