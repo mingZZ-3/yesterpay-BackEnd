@@ -28,6 +28,14 @@
         WHERE m.member_id = #{memberId} AND bl.index = #{index}
     </update>
 
+    <update id="updateBingoCellByLetter">
+        UPDATE bingo_letter_status bls
+            JOIN bingo_letter bl ON bls.bingo_letter_id = bl.bingo_letter_id
+            JOIN member m ON m.bingo_board_id = bl.bingo_board_id
+            SET bls.is_check = true
+        WHERE m.member_id = #{memberId} AND bl.letter = #{letter}
+    </update>
+
     <select id="selectBingoCell" resultType="com.yesterpay.bingo.dto.BingoCellDTO">
         select bl.bingo_letter_id, bl.index, bl.letter, bls.is_check
         from bingo_letter bl

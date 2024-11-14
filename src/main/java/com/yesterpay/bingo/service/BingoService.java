@@ -35,4 +35,9 @@ public class BingoService {
         BingoCellDTO updatedBingoCell = bingoMapper.selectBingoCell(bingoCheckByMissionRequestDTO.getMemberId(), bingoCheckByMissionRequestDTO.getIndex());
         return updatedBingoCell;
     }
+
+    @Transactional
+    public void checkBingoByLetter(long memberId, char letter) {
+        bingoMapper.updateBingoCellByLetter(memberId, letter);
+    }
 }
