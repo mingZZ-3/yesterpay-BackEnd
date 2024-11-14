@@ -44,5 +44,13 @@
         where m.member_id = #{memberId} and bl.index = #{index}
     </select>
 
+    <select id="selectUncheckedBingoLetter" resultType="com.yesterpay.bingo.dto.BingoCellDTO">
+        select bl.bingo_letter_id, bl.index, bl.letter, bls.is_check
+        from bingo_letter bl
+                 join bingo_letter_status bls on bl.bingo_letter_id = bls.bingo_letter_id
+                 join member m on m.bingo_board_id = bl.bingo_board_id
+        where m.member_id = #{memberId} and bls.is_check = false
+    </select>
+
 
 </mapper>

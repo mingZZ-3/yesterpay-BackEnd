@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter @Setter
 public class BingoCheckByLetterDTO {
-    private long memberId;
-    private char letter;
+    private Long memberId;
+    private Character letter;
 }

@@ -43,4 +43,9 @@ public class BingoService {
     public void checkBingoByLetter(BingoCheckByLetterDTO bingoCheckByLetterDTO) {
         bingoMapper.updateBingoCellByLetter(bingoCheckByLetterDTO);
     }
+
+    public List<BingoCellDTO> getUncheckedBingoLetter(Long memberId) {
+        List<BingoCellDTO> uncheckedBingoLetterList = bingoMapper.selectUncheckedBingoLetter(memberId);
+        return uncheckedBingoLetterList;
+    }
 }

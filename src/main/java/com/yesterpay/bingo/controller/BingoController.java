@@ -35,4 +35,10 @@ public class BingoController {
         BingoCellDTO updatedBingoCell = bingoService.checkBingoByIndex(bingoCheckByIndexDTO);
         return ResponseEntity.ok(updatedBingoCell);
     }
+
+    @GetMapping("/bingo/letter/rest")
+    public ResponseEntity<List<BingoCellDTO>> uncheckedBingoLetter(@RequestParam Long memberId) {
+        List<BingoCellDTO> uncheckedBingoLetterList = bingoService.getUncheckedBingoLetter(memberId);
+        return ResponseEntity.ok(uncheckedBingoLetterList);
+    }
 }
