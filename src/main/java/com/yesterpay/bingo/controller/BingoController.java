@@ -2,6 +2,7 @@ package com.yesterpay.bingo.controller;
 
 import com.yesterpay.bingo.dto.BingoCellDTO;
 import com.yesterpay.bingo.dto.BingoCheckByIndexDTO;
+import com.yesterpay.bingo.dto.BingoMission;
 import com.yesterpay.bingo.dto.BingoStatusResponseDTO;
 import com.yesterpay.bingo.service.BingoService;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,11 @@ public class BingoController {
     public ResponseEntity<List<BingoCellDTO>> uncheckedBingoLetter(@RequestParam Long memberId) {
         List<BingoCellDTO> uncheckedBingoLetterList = bingoService.getUncheckedBingoLetter(memberId);
         return ResponseEntity.ok(uncheckedBingoLetterList);
+    }
+
+    @GetMapping("/bingo/mission")
+    public ResponseEntity<BingoMission> bingoMission(@RequestParam Long memberId) {
+        BingoMission bingoMission = bingoService.getBingoMission(memberId);
+        return ResponseEntity.ok(bingoMission);
     }
 }

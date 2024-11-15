@@ -1,9 +1,6 @@
 package com.yesterpay.bingo.service;
 
-import com.yesterpay.bingo.dto.BingoCellDTO;
-import com.yesterpay.bingo.dto.BingoCheckByIndexDTO;
-import com.yesterpay.bingo.dto.BingoCheckByLetterDTO;
-import com.yesterpay.bingo.dto.BingoStatusResponseDTO;
+import com.yesterpay.bingo.dto.*;
 import com.yesterpay.bingo.mapper.BingoMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,5 +44,10 @@ public class BingoService {
     public List<BingoCellDTO> getUncheckedBingoLetter(Long memberId) {
         List<BingoCellDTO> uncheckedBingoLetterList = bingoMapper.selectUncheckedBingoLetter(memberId);
         return uncheckedBingoLetterList;
+    }
+
+    public BingoMission getBingoMission(Long memberId) {
+        BingoMission bingoMission = bingoMapper.selectBingoMission(memberId);
+        return bingoMission;
     }
 }

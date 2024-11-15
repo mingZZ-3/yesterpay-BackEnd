@@ -1,9 +1,6 @@
 package com.yesterpay.bingo.mapper;
 
-import com.yesterpay.bingo.dto.BingoCellDTO;
-import com.yesterpay.bingo.dto.BingoCheckByIndexDTO;
-import com.yesterpay.bingo.dto.BingoCheckByLetterDTO;
-import com.yesterpay.bingo.dto.BingoStatusResponseDTO;
+import com.yesterpay.bingo.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -16,4 +13,5 @@ public interface BingoMapper {
     void updateBingoCellByLetter(BingoCheckByLetterDTO bingoCheckByLetterDTO);
     BingoCellDTO selectBingoCell(Long memberId, Integer index);
     List<BingoCellDTO> selectUncheckedBingoLetter(Long memberId);
+    BingoMission selectBingoMission(Long missionId);
 }

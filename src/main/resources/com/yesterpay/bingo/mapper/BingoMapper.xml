@@ -7,16 +7,16 @@
     <select id="selectBingoBoard" resultType="com.yesterpay.bingo.dto.BingoCellDTO">
         select bl.bingo_letter_id, bl.index, bl.letter, bls.is_check
         from bingo_letter bl
-                join bingo_letter_status bls on bl.bingo_letter_id = bls.bingo_letter_id
-                join member m on m.bingo_board_id = bl.bingo_board_id
+            join bingo_letter_status bls on bl.bingo_letter_id = bls.bingo_letter_id
+            join member m on m.bingo_board_id = bl.bingo_board_id
         where m.member_id = #{memberId};
     </select>
 
     <select id="selectBingoStatus" resultType="com.yesterpay.bingo.dto.BingoStatusResponseDTO">
         select bb.required_count, bbs.bingo_count
         from bingo_board bb
-                join bingo_board_status bbs on bb.bingo_board_id = bbs.bingo_board_id
-                join member m on m.bingo_board_id = bb.bingo_board_id
+            join bingo_board_status bbs on bb.bingo_board_id = bbs.bingo_board_id
+            join member m on m.bingo_board_id = bb.bingo_board_id
         where m.member_id = #{memberId};
     </select>
 
@@ -39,17 +39,24 @@
     <select id="selectBingoCell" resultType="com.yesterpay.bingo.dto.BingoCellDTO">
         select bl.bingo_letter_id, bl.index, bl.letter, bls.is_check
         from bingo_letter bl
-                 join bingo_letter_status bls on bl.bingo_letter_id = bls.bingo_letter_id
-                 join member m on m.bingo_board_id = bl.bingo_board_id
+             join bingo_letter_status bls on bl.bingo_letter_id = bls.bingo_letter_id
+             join member m on m.bingo_board_id = bl.bingo_board_id
         where m.member_id = #{memberId} and bl.index = #{index}
     </select>
 
     <select id="selectUncheckedBingoLetter" resultType="com.yesterpay.bingo.dto.BingoCellDTO">
         select bl.bingo_letter_id, bl.index, bl.letter, bls.is_check
         from bingo_letter bl
-                 join bingo_letter_status bls on bl.bingo_letter_id = bls.bingo_letter_id
-                 join member m on m.bingo_board_id = bl.bingo_board_id
+             join bingo_letter_status bls on bl.bingo_letter_id = bls.bingo_letter_id
+             join member m on m.bingo_board_id = bl.bingo_board_id
         where m.member_id = #{memberId} and bls.is_check = false
+    </select>
+
+    <select id="selectBingoMission" resultType="com.yesterpay.bingo.dto.BingoMission">
+        select bm.bingo_mission_id, bm.mission
+        from bingo_mission bm
+            join member m on bm.bingo_mission_id = m. bingo_mission_id
+        where m.member_id = #{memberId}
     </select>
 
 
