@@ -31,17 +31,21 @@
         UPDATE bingo_letter_status bls
             JOIN bingo_letter bl ON bls.bingo_letter_id = bl.bingo_letter_id
             JOIN member m ON m.bingo_board_id = bl.bingo_board_id
-            SET bls.is_check = true
+        SET bls.is_check = true
         WHERE m.member_id = #{memberId} AND bl.index = #{index}
     </update>
 
-    <update id="updateBingoCellByLetter" parameterType="com.yesterpay.bingo.dto.BingoCheckByLetterDTO">
+    <update id="updateBingoCellByLetterList" parameterType="com.yesterpay.bingo.dto.BingoCheckByLetterListDTO">
         UPDATE bingo_letter_status bls
             JOIN bingo_letter bl ON bls.bingo_letter_id = bl.bingo_letter_id
             JOIN member m ON m.bingo_board_id = bl.bingo_board_id
-            SET bls.is_check = true
-        WHERE m.member_id = #{memberId} AND bl.letter = #{letter}
+        SET bls.is_check = true
+        WHERE m.member_id = #{memberId} AND bl.letter IN
+        <foreach collection="letterList" item="letter" open="(" separator="," close=")">
+            #{letter}
+        </foreach>
     </update>
+
 
     <select id="selectBingoCell" resultType="com.yesterpay.bingo.dto.BingoCellDTO">
         select bl.bingo_letter_id, bl.index, bl.letter, bls.is_check

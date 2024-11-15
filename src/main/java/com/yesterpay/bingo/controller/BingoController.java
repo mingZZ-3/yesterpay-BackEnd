@@ -48,8 +48,8 @@ public class BingoController {
 
     // '글자로 빙고 체크' 기능을 테스트 하기 위한 테스트용 api
     @PostMapping("/test/bingo/check/by-letter")
-    public ResponseEntity<Integer> bingoCheck(@RequestBody BingoCheckByLetterDTO bingoCheckByIndexDTO) {
-        int changedCount = bingoService.checkBingoByLetter(bingoCheckByIndexDTO);
+    public ResponseEntity<Integer> bingoCheck(@RequestBody BingoCheckByLetterListDTO bingoCheckByIndexDTO) {
+        int changedCount = bingoService.checkBingoByLetterList(bingoCheckByIndexDTO);
         return ResponseEntity.ok(changedCount);
     }
 }

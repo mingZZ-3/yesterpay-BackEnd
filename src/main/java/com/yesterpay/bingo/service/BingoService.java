@@ -34,11 +34,11 @@ public class BingoService {
 
     // 글자를 얻은 경우, 해당 글자와 일치하는 빙고칸을 체크함
     @Transactional
-    public int checkBingoByLetter(BingoCheckByLetterDTO bingoCheckByLetterDTO) {
-        int changedCount = bingoMapper.updateBingoCellByLetter(bingoCheckByLetterDTO);
+    public int checkBingoByLetterList(BingoCheckByLetterListDTO bingoCheckByLetterListDTO) {
+        int changedCount = bingoMapper.updateBingoCellByLetterList(bingoCheckByLetterListDTO);
 
         // 빙고 완성 유무 판단 및 처리
-        isBingoCompleted(bingoCheckByLetterDTO.getMemberId());
+        isBingoCompleted(bingoCheckByLetterListDTO.getMemberId());
 
         return changedCount;
     }

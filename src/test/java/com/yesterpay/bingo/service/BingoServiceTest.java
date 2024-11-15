@@ -1,7 +1,7 @@
 package com.yesterpay.bingo.service;
 
 import com.yesterpay.bingo.dto.BingoCheckByIndexDTO;
-import com.yesterpay.bingo.dto.BingoCheckByLetterDTO;
+import com.yesterpay.bingo.dto.BingoCheckByLetterListDTO;
 import com.yesterpay.bingo.dto.BingoStatusResponseDTO;
 import com.yesterpay.member.dto.Member;
 import com.yesterpay.member.service.MemberService;
@@ -27,23 +27,23 @@ class BingoServiceTest {
     @DisplayName("글자 획득 시, 빙고 체크 테스트")
     void 글자_획득시_빙고_체크() {
         //given
-        BingoCheckByLetterDTO bingoCheckByLetterDTO1 = new BingoCheckByLetterDTO();
-        bingoCheckByLetterDTO1.setMemberId(1L);
-        bingoCheckByLetterDTO1.setLetter('자');
+        BingoCheckByLetterListDTO bingoCheckByLetterListDTO1 = new BingoCheckByLetterListDTO();
+        bingoCheckByLetterListDTO1.setMemberId(1L);
+        bingoCheckByLetterListDTO1.setLetter('자');
 
         BingoCheckByIndexDTO bingoCheckByIndexDTO = new BingoCheckByIndexDTO();
         bingoCheckByIndexDTO.setMemberId(1L);
         bingoCheckByIndexDTO.setIndex(7);
         bingoCheckByIndexDTO.setIsSuccess(true);
 
-        BingoCheckByLetterDTO bingoCheckByLetterDTO2 = new BingoCheckByLetterDTO();
-        bingoCheckByLetterDTO2.setMemberId(1L);
-        bingoCheckByLetterDTO2.setLetter('바');
+        BingoCheckByLetterListDTO bingoCheckByLetterListDTO2 = new BingoCheckByLetterListDTO();
+        bingoCheckByLetterListDTO2.setMemberId(1L);
+        bingoCheckByLetterListDTO2.setLetter('바');
 
         //when
-        bingoService.checkBingoByLetter(bingoCheckByLetterDTO1);
+        bingoService.checkBingoByLetterList(bingoCheckByLetterListDTO1);
         bingoService.checkBingoByIndex(bingoCheckByIndexDTO);
-        bingoService.checkBingoByLetter(bingoCheckByLetterDTO2);
+        bingoService.checkBingoByLetterList(bingoCheckByLetterListDTO2);
 
         //then
         Member member = memberService.findOne(1L);

@@ -3,8 +3,10 @@ package com.yesterpay.bingo.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter @Setter
-public class BingoCheckByLetterDTO {
+public class BingoCheckByLetterListDTO {
     private Long memberId;
-    private Character letter;
+    private List<Character> letterList;
 }

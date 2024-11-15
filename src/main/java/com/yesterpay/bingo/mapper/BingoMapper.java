@@ -11,7 +11,7 @@ public interface BingoMapper {
     BingoBoard selectBingoBoard(Long memberId);
     BingoStatusResponseDTO selectBingoStatus(Long memberId);
     int updateBingoCellByIndex(BingoCheckByIndexDTO bingoCheckByIndexDTO);
-    int updateBingoCellByLetter(BingoCheckByLetterDTO bingoCheckByLetterDTO);
+    int updateBingoCellByLetterList(BingoCheckByLetterListDTO bingoCheckByLetterListDTO);
     BingoCellDTO selectBingoCell(Long memberId, Integer index);
     List<BingoCellDTO> selectUncheckedBingoLetter(Long memberId);
     BingoMission selectBingoMission(Long memberId);
