@@ -51,7 +51,19 @@ public class TeamService {
         return members;
     }
 
+    public boolean hasPuzzleTeam(Long memberId) {
+        Member member = mapper.getMemberById(memberId);
+        if (member.getPuzzleTeamId() == 0)
+            return false;
+        else
+            return true;
+    }
+
     public Team makeTeam(Long memberId) {
+        if (hasPuzzleTeam(memberId)) {
+            return null;
+        }
+
         Team team = new Team();
         team.setMemberId(memberId);
         team.setCrosswordId(1L);

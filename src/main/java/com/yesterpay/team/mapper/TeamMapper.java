@@ -19,6 +19,7 @@ public interface TeamMapper {
     List<Long> getPuzzleWordId(Long teamId);
     int makeStatus(Long teamId, Long wordId);
 
+    Member getMemberById(Long memberId);
     int updateUser(Long teamId, Long memberId);
     int insertAlarm(Long memberId);
 }

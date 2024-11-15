@@ -91,6 +91,12 @@
             (#{teamId}, #{wordId}, 0, '');
     </insert>
 
+    <select id="getMemberById" parameterType="long" resultType="com.yesterpay.member.dto.Member">
+        select *
+        from member
+        where member_id = #{memberId}
+    </select>
+
     <insert id="insertAlarm" >
 
     </insert>
