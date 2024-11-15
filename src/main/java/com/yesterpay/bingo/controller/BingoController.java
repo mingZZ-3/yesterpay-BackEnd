@@ -31,12 +31,6 @@ public class BingoController {
         return ResponseEntity.ok(bingoStatus);
     }
 
-    @PostMapping("/bingo/mission/success")
-    public ResponseEntity<BingoCellDTO> missionSuccess(@RequestBody BingoCheckByIndexDTO bingoCheckByIndexDTO) {
-        BingoCellDTO updatedBingoCell = bingoService.checkBingoByIndex(bingoCheckByIndexDTO);
-        return ResponseEntity.ok(updatedBingoCell);
-    }
-
     @GetMapping("/bingo/letter/rest")
     public ResponseEntity<List<BingoCellDTO>> uncheckedBingoLetter(@RequestParam Long memberId) {
         List<BingoCellDTO> uncheckedBingoLetterList = bingoService.getUncheckedBingoLetter(memberId);
@@ -47,5 +41,14 @@ public class BingoController {
     public ResponseEntity<BingoMission> bingoMission(@RequestParam Long memberId) {
         BingoMission bingoMission = bingoService.getBingoMission(memberId);
         return ResponseEntity.ok(bingoMission);
+    }
+
+    @PostMapping("/bingo/mission/success")
+    public ResponseEntity<BingoCellDTO> missionSuccess(@RequestBody BingoCheckByIndexDTO bingoCheckByIndexDTO) {
+        BingoCellDTO updatedBingoCell = null;
+        if (bingoCheckByIndexDTO.getIsSuccess()) {
+            updatedBingoCell = bingoService.checkBingoByIndex(bingoCheckByIndexDTO);
+        }
+        return ResponseEntity.ok(updatedBingoCell);
     }
 }

@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public class BingoCheckByIndexDTO {
-    private long memberId;
-    private int index;
+    private Long memberId;
+    private Integer index;
+    private Boolean isSuccess;
 }
