@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -61,6 +62,12 @@ public class TeamService {
         }
         updateUser(team.getPuzzleTeamId(), team.getMemberId());
         mapper.addMaster(memberId, team.getPuzzleTeamId());
+
+        // 십자말 현황 초기 세팅
+        List<Long> wordIds = mapper.getPuzzleWordId(team.getPuzzleTeamId());
+        for (Long wordId : wordIds) {
+            mapper.makeStatus(team.getPuzzleTeamId(), wordId);
+        }
         return selectById(team.getPuzzleTeamId());
     }
 
