@@ -45,10 +45,7 @@ public class BingoController {
 
     @PostMapping("/bingo/mission/success")
     public ResponseEntity<BingoCellDTO> missionSuccess(@RequestBody BingoCheckByIndexDTO bingoCheckByIndexDTO) {
-        BingoCellDTO updatedBingoCell = null;
-        if (bingoCheckByIndexDTO.getIsSuccess()) {
-            updatedBingoCell = bingoService.checkBingoByIndex(bingoCheckByIndexDTO);
-        }
+        BingoCellDTO updatedBingoCell = bingoService.checkBingoByIndex(bingoCheckByIndexDTO);
         return ResponseEntity.ok(updatedBingoCell);
     }
 }

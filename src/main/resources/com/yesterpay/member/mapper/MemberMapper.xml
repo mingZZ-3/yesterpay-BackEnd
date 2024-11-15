@@ -23,4 +23,10 @@
         where lc.member_id = #{memberId}
     </select>
 
+    <update id="increaseBingoMissionId">
+        update member
+        set bingo_mission_id = bingo_mission_id + 1
+        where member_id = #{memberId}
+    </update>
+
 </mapper>

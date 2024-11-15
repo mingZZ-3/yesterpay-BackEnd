@@ -11,4 +11,5 @@ public interface MemberMapper {
     Member selectOne(Long memberId);
     Long selectOneByIdAndPw(LoginRequestDTO loginRequestDTO);
     List<Character> selectLetterList(Long memberId);
+    void increaseBingoMissionId(Long memberId);
 }
