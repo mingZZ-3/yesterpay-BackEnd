@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yesterpay.team.mapper.TeamMapper">
+    <parameterMap id="joinTeam" type="object">
+
+    </parameterMap>
+
+    <select id="selectAll" resultType="com.yesterpay.team.dto.Team">
+        select *
+        from puzzle_team
+    </select>
+
+    <select id="selectById" parameterType="long" resultType="com.yesterpay.team.dto.Team">
+        select p.*
+        from puzzle_team as p
+        where puzzle_team_id = #{teamId}
+    </select>
+
+    <select id="selectMembersByTeamId" parameterType="long" resultType="com.yesterpay.member.dto.Member">
+        SELECT
+            m.member_id,
+            m.nick_name,
+            m.img_url,
+            m.title,
+            (SELECT GROUP_CONCAT(hl.letter)
+             FROM hidden_letter AS hl
+                      JOIN letter_collection AS lc ON lc.hidden_letter_id = hl.hidden_letter_id
+             WHERE lc.member_id = m.member_id) AS letters
+        FROM
+            puzzle_team_member AS pm
+        JOIN
+            member AS m ON pm.member_id = m.member_id
+        WHERE
+            pm.puzzle_team_id = #{teamId} AND pm.approve = 1;
+    </select>
+
+    <insert id="makeTeam" parameterType="com.yesterpay.team.dto.Team" useGeneratedKeys="true" keyProperty="puzzleTeamId">
+        INSERT INTO puzzle_team
+        (crossword_id, member_id)
+        VALUES
+        ( #{crosswordId}, #{memberId})
+    </insert>
+
+    <update id="updateUser" parameterType="long">
+        UPDATE member
+        SET
+        puzzle_team_id = #{teamId}
+        WHERE member_id = #{memberId}
+    </update>
+
+    <insert id="addMaster" parameterType="long">
+        INSERT INTO puzzle_team_member
+            (member_id, puzzle_team_id, approve)
+        VALUES
+            ( #{memberId}, #{teamId}, 1 )
+    </insert>
+
+    <insert id="joinTeam" parameterType="long">
+        INSERT INTO puzzle_team_member
+        (`member_id`, `puzzle_team_id`)
+        VALUES
+        ( #{memberId}, #{teamId} )
+    </insert>
+
+    <update id="acceptMember" parameterType="long">
+        UPDATE puzzle_team_member
+        SET
+            approve = 1
+        WHERE member_id = #{memberId} and puzzle_team_id = #{teamId}
+    </update>
+
+    <delete id="rejectMember" parameterType="long">
+        DELETE FROM puzzle_team_member
+        WHERE member_id = #{memberId} and puzzle_team_id = #{teamId}
+    </delete>
+
+    <insert id="insertAlarm" >
+
+    </insert>
+</mapper>
