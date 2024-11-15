@@ -7,11 +7,16 @@ import java.util.List;
 
 @Mapper
 public interface BingoMapper {
-    List<BingoCellDTO> selectBingoBoard(Long memberId);
+    List<BingoCellDTO> selectBingoLetterList(Long memberId);
+    BingoBoard selectBingoBoard(Long memberId);
     BingoStatusResponseDTO selectBingoStatus(Long memberId);
-    void updateBingoCellByIndex(BingoCheckByIndexDTO bingoCheckByIndexDTO);
-    void updateBingoCellByLetter(BingoCheckByLetterDTO bingoCheckByLetterDTO);
+    int updateBingoCellByIndex(BingoCheckByIndexDTO bingoCheckByIndexDTO);
+    int updateBingoCellByLetter(BingoCheckByLetterDTO bingoCheckByLetterDTO);
     BingoCellDTO selectBingoCell(Long memberId, Integer index);
     List<BingoCellDTO> selectUncheckedBingoLetter(Long memberId);
-    BingoMission selectBingoMission(Long missionId);
+    BingoMission selectBingoMission(Long memberId);
+    int updateBingoStatus(Long memberId, Long bingoBoardId, Integer bingoCount);
+    int insertBingoBoardStatus(Long memberId, Long bingoBoardId);
+    int insertBingoLetterStatus(Long memberId, List<Long> bingoLetterIdList);
+    List<Long> selectBingoLetterIdListByBoard(Long bingoBoardId);
 }

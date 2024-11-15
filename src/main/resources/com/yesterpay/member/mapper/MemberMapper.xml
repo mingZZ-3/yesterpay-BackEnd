@@ -29,4 +29,10 @@
         where member_id = #{memberId}
     </update>
 
+    <update id="increaseBingoBoardId">
+        update member
+        set bingo_board_id = bingo_board_id + 1
+        where member_id = #{memberId}
+    </update>
+
 </mapper>
