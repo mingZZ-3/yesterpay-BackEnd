@@ -23,9 +23,47 @@
         WHERE member_id = #{memberId};
     </update>
 
+    <update id="subCombiCnt" parameterType="long">
+        UPDATE member
+        SET combi_count = combi_count - 1
+        WHERE member_id = #{memberId};
+    </update>
+
     <select id="getCombiCnt" parameterType="long" resultType="int">
         select combi_count
         from member
         where member_id = #{memberId}
+    </select>
+
+    <select id="findLetter" parameterType="string" resultType="long">
+        select hidden_letter_id
+        from hidden_letter
+        where letter = #{letter}
+    </select>
+
+    <insert id="addLetterInDB" parameterType="string">
+        INSERT INTO hidden_letter
+        (letter)
+        VALUES
+        (#{letter});
+    </insert>
+
+    <insert id="addLetterToMember" parameterType="long">
+        INSERT INTO `yesterpay`.`letter_collection`
+        (member_id, hidden_letter_id)
+        VALUES
+        (#{memberId}, #{letterId})
+    </insert>
+
+    <delete id="deleteLetter" parameterType="long">
+        DELETE FROM letter_collection
+        WHERE member_id = #{memberId} and hidden_letter_id = #{letterId}
+    </delete>
+
+    <select id="selectLetterList" resultType="java.lang.String">
+        select hl.letter
+        from letter_collection lc
+                 join hidden_letter hl on lc.hidden_letter_id = hl.hidden_letter_id
+        where lc.member_id = #{memberId}
     </select>
 </mapper>

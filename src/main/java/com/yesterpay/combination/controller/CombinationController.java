@@ -8,11 +8,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -37,6 +39,16 @@ public class CombinationController {
 
         response.put("combiCount", result);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/member/{memberId}/letter/new")
+    @Operation(summary = "보유 글자 업데이트하기")
+    public ResponseEntity<List<String>> newLetter(@PathVariable("memberId") Long memberId, @RequestBody Combination combination) {
+        List<String> result = service.updateLetters(memberId, combination);
+        if (result == null) {
+            return ResponseEntity.badRequest().body(result);
+        }
+        return ResponseEntity.ok(result);
     }
 
     // todo : 스케줄러로 shared 주기적으로 삭제하기
