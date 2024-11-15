@@ -19,4 +19,8 @@ public class PuzzleBoardVO {
     private String orientation;
     private String clue;
     private boolean isChecked;
+
+    // 제안 단어
+    private Long proposalWordId;
+    private char necessaryChar;
 }

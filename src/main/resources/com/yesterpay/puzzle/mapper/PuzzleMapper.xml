@@ -37,4 +37,36 @@
         from puzzle_status as ps
         where ps.puzzle_team_id = #{teamId} and ps.word_id = #{wordId}
     </select>
+
+    <insert id="suggestWord" parameterType="com.yesterpay.puzzle.dto.SuggestPuzzle"  useGeneratedKeys="true" keyProperty="proposalWordId">
+        INSERT INTO proposal_word
+        (word_id, puzzle_team_id, word)
+        VALUES
+        (#{wordId}, #{puzzleTeamId}, #{word});
+    </insert>
+
+    <insert id="setNecessaryChar" parameterType="com.yesterpay.puzzle.dto.PuzzleBoardVO">
+        INSERT INTO proposal_word_necessary_char
+        (proposal_word_id, necessary_char)
+        VALUES
+        (#{proposalWordId}, #{necessaryChar});
+    </insert>
+
+    <select id="getSuggestWords" parameterType="long" resultType="com.yesterpay.puzzle.dto.SuggestPuzzle">
+        select *
+        from proposal_word
+        where puzzle_team_id = #{teamId}
+    </select>
+
+    <select id="getSubmittedChars" parameterType="long" resultType="string">
+        select submit_char
+        from proposal_word_submit_char
+        where proposal_word_id = #{proposalId}
+    </select>
+
+    <select id="getNecessaryChars" parameterType="long" resultType="string">
+        select necessary_char
+        from proposal_word_necessary_char
+        where proposal_word_id = #{proposalId}
+    </select>
 </mapper>

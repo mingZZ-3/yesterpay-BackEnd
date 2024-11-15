@@ -2,17 +2,19 @@ package com.yesterpay.puzzle.controller;
 
 import com.yesterpay.puzzle.dto.PuzzleBoard;
 import com.yesterpay.puzzle.dto.PuzzleHint;
+import com.yesterpay.puzzle.dto.SuggestPuzzle;
 import com.yesterpay.puzzle.service.PuzzleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -39,5 +41,26 @@ public class PuzzleController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(hint);
+    }
+
+    @PostMapping("/puzzle/board/word")
+    @Operation(summary = "단어 제안하기")
+    public ResponseEntity<Map<String, Boolean>> suggestPuzzleWord(@RequestBody SuggestPuzzle suggest) {
+        int result = service.suggestWord(suggest);
+
+        Map<String, Boolean> response = new HashMap<>();
+        if (result == 0) {
+            response.put("success", false);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        response.put("success", true);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/puzzle/board/{teamId}/suggest")
+    @Operation(summary = "제안된 단어 리스트 조회")
+    public ResponseEntity<List<SuggestPuzzle>> getSuggestWords(@PathVariable Long teamId) {
+        List<SuggestPuzzle> result = service.getSuggestWords(teamId);
+        return ResponseEntity.ok(result);
     }
 }

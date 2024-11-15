@@ -3,6 +3,7 @@ package com.yesterpay.puzzle.service;
 import com.yesterpay.puzzle.dto.PuzzleBoard;
 import com.yesterpay.puzzle.dto.PuzzleBoardVO;
 import com.yesterpay.puzzle.dto.PuzzleHint;
+import com.yesterpay.puzzle.dto.SuggestPuzzle;
 import com.yesterpay.puzzle.mapper.PuzzleMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -120,5 +121,30 @@ public class PuzzleService {
         return puzzleHint;
     }
 
+    public int suggestWord(SuggestPuzzle suggestPuzzle) {
+        // proposal_word 테이블에 넣기
+        int result = mapper.suggestWord(suggestPuzzle);
+        if (result == 0) {
+            return 0;
+        }
 
+        // proposal_word_necessary_char 테이블에 넣기
+        String word = suggestPuzzle.getWord();
+        for (int i = 0; i < word.length(); i++) {
+            PuzzleBoardVO cell = new PuzzleBoardVO();
+            cell.setProposalWordId(suggestPuzzle.getProposalWordId());
+            cell.setNecessaryChar(suggestPuzzle.getWord().charAt(i));
+            mapper.setNecessaryChar(cell);
+        }
+        return result;
+    }
+
+    public List<SuggestPuzzle> getSuggestWords(Long teamId) {
+        List<SuggestPuzzle> suggestPuzzles = mapper.getSuggestWords(teamId);
+        for (SuggestPuzzle suggestPuzzle : suggestPuzzles) {
+            suggestPuzzle.setSubmitList(mapper.getSubmittedChars(suggestPuzzle.getProposalWordId()));
+            suggestPuzzle.setNecessaryList(mapper.getNecessaryChars(suggestPuzzle.getProposalWordId()));
+        }
+        return suggestPuzzles;
+    }
 }
