@@ -3,9 +3,10 @@ package com.yesterpay.bingo.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter @Setter
-public class BingoCheckByIndexDTO {
+public class BingoCheckByLetterListDTO {
     private Long memberId;
-    private Integer index;
-    private Boolean isSuccess;
+    private List<Character> letterList;
 }

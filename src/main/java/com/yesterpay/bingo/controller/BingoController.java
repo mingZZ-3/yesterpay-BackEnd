@@ -1,8 +1,6 @@
 package com.yesterpay.bingo.controller;
 
-import com.yesterpay.bingo.dto.BingoCellDTO;
-import com.yesterpay.bingo.dto.BingoCheckByIndexDTO;
-import com.yesterpay.bingo.dto.BingoStatusResponseDTO;
+import com.yesterpay.bingo.dto.*;
 import com.yesterpay.bingo.service.BingoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +17,9 @@ public class BingoController {
     private final BingoService bingoService;
 
     @GetMapping("/bingo/board")
-    public ResponseEntity<List<BingoCellDTO>> bingoBoard(@RequestParam Long memberId) {
-        List<BingoCellDTO> bingoBoard = bingoService.getBingoBoard(memberId);
-        return ResponseEntity.ok(bingoBoard);
+    public ResponseEntity<BingoBoardDetailDTO> bingoBoard(@RequestParam Long memberId) {
+        BingoBoardDetailDTO bingoBoardDetail = bingoService.getBingoBoardDetail(memberId);
+        return ResponseEntity.ok(bingoBoardDetail);
     }
 
     @GetMapping("/bingo/status")
@@ -30,15 +28,28 @@ public class BingoController {
         return ResponseEntity.ok(bingoStatus);
     }
 
+    @GetMapping("/bingo/letter/rest")
+    public ResponseEntity<List<BingoCellDTO>> uncheckedBingoLetter(@RequestParam Long memberId) {
+        List<BingoCellDTO> uncheckedBingoLetterList = bingoService.getUncheckedBingoLetter(memberId);
+        return ResponseEntity.ok(uncheckedBingoLetterList);
+    }
+
+    @GetMapping("/bingo/mission")
+    public ResponseEntity<BingoMission> bingoMission(@RequestParam Long memberId) {
+        BingoMission bingoMission = bingoService.getBingoMission(memberId);
+        return ResponseEntity.ok(bingoMission);
+    }
+
     @PostMapping("/bingo/mission/success")
     public ResponseEntity<BingoCellDTO> missionSuccess(@RequestBody BingoCheckByIndexDTO bingoCheckByIndexDTO) {
         BingoCellDTO updatedBingoCell = bingoService.checkBingoByIndex(bingoCheckByIndexDTO);
         return ResponseEntity.ok(updatedBingoCell);
     }
 
-    @GetMapping("/bingo/letter/rest")
-    public ResponseEntity<List<BingoCellDTO>> uncheckedBingoLetter(@RequestParam Long memberId) {
-        List<BingoCellDTO> uncheckedBingoLetterList = bingoService.getUncheckedBingoLetter(memberId);
-        return ResponseEntity.ok(uncheckedBingoLetterList);
+    // '글자로 빙고 체크' 기능을 테스트 하기 위한 테스트용 api
+    @PostMapping("/test/bingo/check/by-letter")
+    public ResponseEntity<Integer> bingoCheck(@RequestBody BingoCheckByLetterListDTO bingoCheckByIndexDTO) {
+        int changedCount = bingoService.checkBingoByLetterList(bingoCheckByIndexDTO);
+        return ResponseEntity.ok(changedCount);
     }
 }
