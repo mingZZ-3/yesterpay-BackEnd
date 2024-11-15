@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yesterpay.puzzle.mapper.PuzzleMapper">
+    <select id="getPuzzleBoard" parameterType="long" resultType="com.yesterpay.puzzle.dto.PuzzleBoardVO">
+        SELECT
+            pw.*,
+            ps.is_checked, ps.submit_word
+        FROM
+            puzzle_word AS pw
+                LEFT JOIN
+            puzzle_status AS ps
+            ON pw.word_id = ps.word_id AND ps.puzzle_team_id = #{teamId}
+        WHERE
+            pw.crossword_id = (
+                SELECT pt.crossword_id
+                FROM puzzle_team AS pt
+                WHERE pt.puzzle_team_id = #{teamId}
+            );
+    </select>
+
+    <select id="getPuzzleHint" parameterType="long" resultType="com.yesterpay.puzzle.dto.PuzzleBoardVO">
+        select pw.word, pw.clue, pw.no, pw.orientation
+        from puzzle_word as pw
+        where pw.crossword_id = (
+            select pt.crossword_id
+            from puzzle_team as pt
+            where pt.puzzle_team_id = #{teamId}
+        )
+        ORDER BY pw.no ASC
+    </select>
+    
+    <select id="getPuzzleStatus" parameterType="long" resultType="com.yesterpay.puzzle.dto.PuzzleBoardVO">
+        select *
+        from puzzle_status as ps
+        where ps.puzzle_team_id = #{teamId} and ps.word_id = #{wordId}
+    </select>
+</mapper>
