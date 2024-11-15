@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yesterpay.combination.mapper.CombinationMapper">
+    <select id="selectSharedId" parameterType="com.yesterpay.combination.dto.Combination" resultType="int">
+        select Count(*)
+        from shared
+        where member_id = #{memberId} and kakao_hash_id = #{kakaoHashId}
+    </select>
+
+    <insert id="addSharedId" parameterType="com.yesterpay.combination.dto.Combination">
+        INSERT INTO shared
+        (member_id,kakao_hash_id)
+        VALUES
+        (#{memberId}, #{kakaoHashId});
+    </insert>
+
+    <update id="addCombiCnt" parameterType="long">
+        UPDATE member
+        SET combi_count = combi_count + 1
+        WHERE member_id = #{memberId};
+    </update>
+
+    <select id="getCombiCnt" parameterType="long" resultType="int">
+        select combi_count
+        from member
+        where member_id = #{memberId}
+    </select>
+</mapper>
