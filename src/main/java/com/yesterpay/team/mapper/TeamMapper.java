@@ -16,7 +16,10 @@ public interface TeamMapper {
     int joinTeam(Long memberId, Long teamId);
     int acceptMember(Long memberId, Long teamId);
     int rejectMember(Long memberId, Long teamId);
+    List<Long> getPuzzleWordId(Long teamId);
+    int makeStatus(Long teamId, Long wordId);
 
+    Member getMemberById(Long memberId);
     int updateUser(Long teamId, Long memberId);
     int insertAlarm(Long memberId);
 }

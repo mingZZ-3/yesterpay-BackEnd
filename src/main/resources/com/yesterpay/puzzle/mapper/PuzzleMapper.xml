@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yesterpay.puzzle.mapper.PuzzleMapper">
+    <select id="getPuzzleBoard" parameterType="long" resultType="com.yesterpay.puzzle.dto.PuzzleBoardVO">
+        SELECT
+            pw.*,
+            ps.is_checked, ps.submit_word
+        FROM
+            puzzle_word AS pw
+                LEFT JOIN
+            puzzle_status AS ps
+            ON pw.word_id = ps.word_id AND ps.puzzle_team_id = #{teamId}
+        WHERE
+            pw.crossword_id = (
+                SELECT pt.crossword_id
+                FROM puzzle_team AS pt
+                WHERE pt.puzzle_team_id = #{teamId}
+            );
+    </select>
+
+    <select id="getPuzzleHint" parameterType="long" resultType="com.yesterpay.puzzle.dto.PuzzleBoardVO">
+        select pw.word, pw.clue, pw.no, pw.orientation
+        from puzzle_word as pw
+        where pw.crossword_id = (
+            select pt.crossword_id
+            from puzzle_team as pt
+            where pt.puzzle_team_id = #{teamId}
+        )
+        ORDER BY pw.no ASC
+    </select>
+    
+    <select id="getPuzzleStatus" parameterType="long" resultType="com.yesterpay.puzzle.dto.PuzzleBoardVO">
+        select *
+        from puzzle_status as ps
+        where ps.puzzle_team_id = #{teamId} and ps.word_id = #{wordId}
+    </select>
+
+    <insert id="suggestWord" parameterType="com.yesterpay.puzzle.dto.SuggestPuzzle"  useGeneratedKeys="true" keyProperty="proposalWordId">
+        INSERT INTO proposal_word
+        (word_id, puzzle_team_id, word)
+        VALUES
+        (#{wordId}, #{puzzleTeamId}, #{word});
+    </insert>
+
+    <insert id="setNecessaryChar" parameterType="com.yesterpay.puzzle.dto.PuzzleBoardVO">
+        INSERT INTO proposal_word_necessary_char
+        (proposal_word_id, necessary_char)
+        VALUES
+        (#{proposalWordId}, #{necessaryChar});
+    </insert>
+
+    <select id="getSuggestWords" parameterType="long" resultType="com.yesterpay.puzzle.dto.SuggestPuzzle">
+        select *
+        from proposal_word
+        where puzzle_team_id = #{teamId}
+    </select>
+
+    <select id="getSuggestWordById" parameterType="long" resultType="com.yesterpay.puzzle.dto.SuggestPuzzle">
+        select *
+        from proposal_word
+        where proposal_word_id = #{proposalWordId}
+    </select>
+
+    <select id="getSubmittedChars" parameterType="long" resultType="string">
+        select submit_char
+        from proposal_word_submit_char
+        where proposal_word_id = #{proposalId}
+    </select>
+
+    <select id="getNecessaryChars" parameterType="long" resultType="string">
+        select necessary_char
+        from proposal_word_necessary_char
+        where proposal_word_id = #{proposalId}
+    </select>
+
+    <select id="getMyLetters" parameterType="long" resultType="string">
+        SELECT hl.letter
+        FROM hidden_letter AS hl
+                 JOIN letter_collection AS lc ON lc.hidden_letter_id = hl.hidden_letter_id
+        WHERE lc.member_id = #{memberId}
+    </select>
+
+    <delete id="removeNecessaryChar" parameterType="com.yesterpay.puzzle.dto.SuggestPuzzle">
+        DELETE FROM proposal_word_necessary_char
+        WHERE proposal_word_id = #{proposalWordId} and necessary_char = #{word}
+    </delete>
+
+    <insert id="submitChar" parameterType="com.yesterpay.puzzle.dto.SuggestPuzzle">
+        INSERT INTO proposal_word_submit_char
+        (proposal_word_id, team_member_id, submit_char)
+        VALUES
+        (#{proposalWordId}, #{memberId}, #{word});
+    </insert>
+
+    <update id="updatePuzzleStatus" parameterType="com.yesterpay.puzzle.dto.SuggestPuzzle">
+        UPDATE puzzle_status
+        SET
+        is_checked = 1,
+        submit_word = #{word}
+        WHERE puzzle_team_id = #{puzzleTeamId} and word_id = #{wordId}
+    </update>
+
+    <select id="getCompletionRate" parameterType="long" resultType="int">
+        SELECT
+            ROUND((SUM(CASE WHEN ps.is_checked = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(*)), 0) AS completionRate
+        FROM
+            puzzle_word AS pw
+                LEFT JOIN
+            puzzle_status AS ps
+            ON pw.word_id = ps.word_id AND ps.puzzle_team_id = #{teamId}
+        WHERE
+            pw.crossword_id = (
+                SELECT pt.crossword_id
+                FROM puzzle_team AS pt
+                WHERE pt.puzzle_team_id = #{teamId}
+            )
+    </select>
+</mapper>

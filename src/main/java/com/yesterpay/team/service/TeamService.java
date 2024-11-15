@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -50,7 +51,19 @@ public class TeamService {
         return members;
     }
 
+    public boolean hasPuzzleTeam(Long memberId) {
+        Member member = mapper.getMemberById(memberId);
+        if (member.getPuzzleTeamId() == 0)
+            return false;
+        else
+            return true;
+    }
+
     public Team makeTeam(Long memberId) {
+        if (hasPuzzleTeam(memberId)) {
+            return null;
+        }
+
         Team team = new Team();
         team.setMemberId(memberId);
         team.setCrosswordId(1L);
@@ -61,6 +74,12 @@ public class TeamService {
         }
         updateUser(team.getPuzzleTeamId(), team.getMemberId());
         mapper.addMaster(memberId, team.getPuzzleTeamId());
+
+        // 십자말 현황 초기 세팅
+        List<Long> wordIds = mapper.getPuzzleWordId(team.getPuzzleTeamId());
+        for (Long wordId : wordIds) {
+            mapper.makeStatus(team.getPuzzleTeamId(), wordId);
+        }
         return selectById(team.getPuzzleTeamId());
     }
 
@@ -76,6 +95,7 @@ public class TeamService {
 
     public int acceptMember(Long memberId, Long teamId) {
         int result = mapper.acceptMember(memberId,teamId);
+        updateUser(teamId, memberId);
         return result;
     }
 
