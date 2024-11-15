@@ -102,4 +102,20 @@
         submit_word = #{word}
         WHERE puzzle_team_id = #{puzzleTeamId} and word_id = #{wordId}
     </update>
+
+    <select id="getCompletionRate" parameterType="long" resultType="int">
+        SELECT
+            ROUND((SUM(CASE WHEN ps.is_checked = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(*)), 0) AS completionRate
+        FROM
+            puzzle_word AS pw
+                LEFT JOIN
+            puzzle_status AS ps
+            ON pw.word_id = ps.word_id AND ps.puzzle_team_id = #{teamId}
+        WHERE
+            pw.crossword_id = (
+                SELECT pt.crossword_id
+                FROM puzzle_team AS pt
+                WHERE pt.puzzle_team_id = #{teamId}
+            )
+    </select>
 </mapper>

@@ -88,4 +88,13 @@ public class PuzzleController {
         response.put("success", true);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("puzzle/rate/{teamId}")
+    @Operation(summary = "십자말 완성률")
+    public ResponseEntity<Map<String, Object>> getPuzzle(@PathVariable Long teamId) {
+        Map<String, Object> result = new HashMap<>();
+        int rate = service.getCompletionRate(teamId);
+        result.put("completionRate", rate);
+        return ResponseEntity.ok(result);
+    }
 }

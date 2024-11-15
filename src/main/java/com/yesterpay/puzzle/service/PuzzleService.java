@@ -182,4 +182,8 @@ public class PuzzleService {
 
         return 1;
     }
+
+    public int getCompletionRate(Long teamId) {
+        return mapper.getCompletionRate(teamId);
+    }
 }

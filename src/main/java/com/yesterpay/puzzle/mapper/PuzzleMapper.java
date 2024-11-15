@@ -23,4 +23,5 @@ public interface PuzzleMapper {
     int removeNecessaryChar(SuggestPuzzle suggestPuzzle);
     int submitChar(SuggestPuzzle suggestPuzzle);
     int updatePuzzleStatus(SuggestPuzzle suggestPuzzle);
+    int getCompletionRate(Long teamId);
 }
