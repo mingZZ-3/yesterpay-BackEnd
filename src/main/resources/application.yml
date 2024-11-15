@@ -8,3 +8,7 @@ spring:
 #log4j ?? / ?? ??
 logging:
   config=classpath:log4j2.xml
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
