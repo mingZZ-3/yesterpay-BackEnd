@@ -95,6 +95,7 @@ public class TeamService {
 
     public int acceptMember(Long memberId, Long teamId) {
         int result = mapper.acceptMember(memberId,teamId);
+        updateUser(teamId, memberId);
         return result;
     }
 
