@@ -58,6 +58,12 @@
         where puzzle_team_id = #{teamId}
     </select>
 
+    <select id="getSuggestWordById" parameterType="long" resultType="com.yesterpay.puzzle.dto.SuggestPuzzle">
+        select *
+        from proposal_word
+        where proposal_word_id = #{proposalWordId}
+    </select>
+
     <select id="getSubmittedChars" parameterType="long" resultType="string">
         select submit_char
         from proposal_word_submit_char
@@ -69,4 +75,31 @@
         from proposal_word_necessary_char
         where proposal_word_id = #{proposalId}
     </select>
+
+    <select id="getMyLetters" parameterType="long" resultType="string">
+        SELECT hl.letter
+        FROM hidden_letter AS hl
+                 JOIN letter_collection AS lc ON lc.hidden_letter_id = hl.hidden_letter_id
+        WHERE lc.member_id = #{memberId}
+    </select>
+
+    <delete id="removeNecessaryChar" parameterType="com.yesterpay.puzzle.dto.SuggestPuzzle">
+        DELETE FROM proposal_word_necessary_char
+        WHERE proposal_word_id = #{proposalWordId} and necessary_char = #{word}
+    </delete>
+
+    <insert id="submitChar" parameterType="com.yesterpay.puzzle.dto.SuggestPuzzle">
+        INSERT INTO proposal_word_submit_char
+        (proposal_word_id, team_member_id, submit_char)
+        VALUES
+        (#{proposalWordId}, #{memberId}, #{word});
+    </insert>
+
+    <update id="updatePuzzleStatus" parameterType="com.yesterpay.puzzle.dto.SuggestPuzzle">
+        UPDATE puzzle_status
+        SET
+        is_checked = 1,
+        submit_word = #{word}
+        WHERE puzzle_team_id = #{puzzleTeamId} and word_id = #{wordId}
+    </update>
 </mapper>

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -62,5 +63,29 @@ public class PuzzleController {
     public ResponseEntity<List<SuggestPuzzle>> getSuggestWords(@PathVariable Long teamId) {
         List<SuggestPuzzle> result = service.getSuggestWords(teamId);
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/puzzle/suggest")
+    @Operation(summary = "제안 단어의 글자 제출하기")
+    public ResponseEntity<Map<String, Object>> suggestLetter(@RequestBody SuggestPuzzle suggest) {
+        int result = service.submitChar(suggest);
+        Map<String, Object> response = new HashMap<>();
+
+        if (result == -1) {
+            response.put("success", false);
+            response.put("msg", "유저에게 없는 글자입니다.");
+            return ResponseEntity.badRequest().body(response);
+        } else if (result == -2) {
+            response.put("success", false);
+            response.put("msg", "제출할 수 없는 단어입니다.");
+            return ResponseEntity.badRequest().body(response);
+        } else if (result == 0) {
+            response.put("success", false);
+            response.put("msg", "제출을 실패했습니다. 다시 시도해주세요.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        response.put("success", true);
+        return ResponseEntity.ok(response);
     }
 }

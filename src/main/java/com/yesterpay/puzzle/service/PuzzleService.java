@@ -8,6 +8,7 @@ import com.yesterpay.puzzle.mapper.PuzzleMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -121,6 +122,7 @@ public class PuzzleService {
         return puzzleHint;
     }
 
+    @Transactional
     public int suggestWord(SuggestPuzzle suggestPuzzle) {
         // proposal_word 테이블에 넣기
         int result = mapper.suggestWord(suggestPuzzle);
@@ -146,5 +148,38 @@ public class PuzzleService {
             suggestPuzzle.setNecessaryList(mapper.getNecessaryChars(suggestPuzzle.getProposalWordId()));
         }
         return suggestPuzzles;
+    }
+
+    @Transactional
+    public int submitChar(SuggestPuzzle suggestPuzzle) {
+        // 유저가 해당 글자를 가지고 있는지 확인
+        List<String> letters = mapper.getMyLetters(suggestPuzzle.getMemberId());
+        if (!letters.contains(suggestPuzzle.getWord())) {
+            return -1;
+        }
+
+        // necessary에 포함된 글자인지 확인
+        List<String> necessaryChars = mapper.getNecessaryChars(suggestPuzzle.getProposalWordId());
+        if (!necessaryChars.contains(suggestPuzzle.getWord())) {
+            return -2;
+        }
+
+        // necessary에서 제거하고, submit으로 이동
+        int result1 = mapper.removeNecessaryChar(suggestPuzzle);
+        int result2 = mapper.submitChar(suggestPuzzle);
+
+        if (result1 != 1 || result2 != 1) {
+            return 0;
+        }
+
+        // necessary에 더이상 해당 proposal_word_id가 없을때
+        // 해당 word_id 십자말 현황에 반영
+        necessaryChars = mapper.getNecessaryChars(suggestPuzzle.getProposalWordId());
+        if (necessaryChars.isEmpty()) {
+            SuggestPuzzle updatedPuzzle = mapper.getSuggestWordById(suggestPuzzle.getProposalWordId());
+            mapper.updatePuzzleStatus(updatedPuzzle);
+        }
+
+        return 1;
     }
 }

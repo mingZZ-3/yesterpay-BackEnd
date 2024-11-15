@@ -15,6 +15,12 @@ public interface PuzzleMapper {
     int setNecessaryChar(PuzzleBoardVO puzzleBoardVO);
 
     List<SuggestPuzzle> getSuggestWords(Long teamId);
+    SuggestPuzzle getSuggestWordById(Long proposalWordId);
     List<String> getSubmittedChars(Long proposalId);
     List<String> getNecessaryChars(Long proposalId);
+
+    List<String> getMyLetters(Long memberId);
+    int removeNecessaryChar(SuggestPuzzle suggestPuzzle);
+    int submitChar(SuggestPuzzle suggestPuzzle);
+    int updatePuzzleStatus(SuggestPuzzle suggestPuzzle);
 }

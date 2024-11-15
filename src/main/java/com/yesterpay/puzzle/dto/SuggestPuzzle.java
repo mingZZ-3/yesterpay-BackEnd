@@ -14,6 +14,7 @@ public class SuggestPuzzle {
     private Long wordId;
     private Long puzzleTeamId;
     private String word;
+    private Long memberId;
     private List<String> submitList;
     private List<String> necessaryList;
 }
