@@ -97,7 +97,25 @@
         where member_id = #{memberId}
     </select>
 
-    <insert id="insertAlarm" >
-
+    <insert id="sendAlarmToMaster" parameterType="com.yesterpay.notification.dto.Notification">
+        INSERT INTO notification
+        (member_id, content, type, team_member_id)
+        VALUES
+        (#{memberId}, #{content}, #{type}, #{teamMemberId})
     </insert>
+
+    <insert id="sendAlarmToMember" parameterType="com.yesterpay.notification.dto.Notification">
+        INSERT INTO notification
+        (member_id, content, type)
+        VALUES
+        (#{memberId}, #{content}, #{type})
+    </insert>
+
+    <select id="getTeamById" parameterType="long" resultType="long">
+        select member_id
+        from puzzle_team
+        where puzzle_team_id = #{teamId}
+    </select>
+
+
 </mapper>

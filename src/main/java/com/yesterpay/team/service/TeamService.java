@@ -1,6 +1,7 @@
 package com.yesterpay.team.service;
 
 import com.yesterpay.member.dto.Member;
+import com.yesterpay.notification.dto.Notification;
 import com.yesterpay.team.dto.Team;
 import com.yesterpay.team.mapper.TeamMapper;
 import lombok.RequiredArgsConstructor;
@@ -90,12 +91,14 @@ public class TeamService {
 
     public int joinTeam(Long memberId, Long teamId) {
         int result = mapper.joinTeam(memberId, teamId);
+        sendAlarmToMaster(memberId,teamId);
         return result;
     }
 
     public int acceptMember(Long memberId, Long teamId) {
         int result = mapper.acceptMember(memberId,teamId);
         updateUser(teamId, memberId);
+        sendAlarmToMember(memberId);
         return result;
     }
 
@@ -126,5 +129,27 @@ public class TeamService {
         }
         updateUser(0L, memberId);
         return result;
+    }
+
+    public void sendAlarmToMaster(Long teamMemberId, Long teamId) {
+        Member member = mapper.getMemberById(teamMemberId);
+        Long masterId = mapper.getTeamById(teamId);
+
+        Notification noti = new Notification();
+        noti.setTeamMemberId(teamMemberId);
+        noti.setMemberId(masterId);
+        noti.setType(2);
+        noti.setContent(member.getNickName() + " 님이 팀원 신청을 했습니다.");
+
+        mapper.sendAlarmToMaster(noti);
+    }
+
+    public void sendAlarmToMember(Long memberId) {
+        Notification noti = new Notification();
+        noti.setMemberId(memberId);
+        noti.setType(1);
+        noti.setContent("팀 가입을 승인 받았습니다 !");
+
+        mapper.sendAlarmToMember(noti);
     }
 }
