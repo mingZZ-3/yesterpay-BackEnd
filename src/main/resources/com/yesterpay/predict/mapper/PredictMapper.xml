@@ -38,5 +38,11 @@
             AND date between DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) AND CURDATE()
     </select>
 
+    <select id="selectMemberListByDateWithPredictSuccess" resultType="java.lang.Long">
+        select member_id
+        from predict_result
+        where date = #{date} and is_success = true
+    </select>
+
 
 </mapper>

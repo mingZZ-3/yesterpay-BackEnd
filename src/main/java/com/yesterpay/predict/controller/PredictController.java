@@ -40,4 +40,11 @@ public class PredictController {
         int successCount = predictService.getPredictSuccessCount(memberId);
         return ResponseEntity.ok(successCount);
     }
+
+    // 테스트용 api
+    @PostMapping("/test/notification/yesterday/predict/success")
+    public ResponseEntity<Integer> predictTest() {
+        int count = predictService.checkYesterdayPredictSuccess();
+        return ResponseEntity.ok(count);
+    }
 }

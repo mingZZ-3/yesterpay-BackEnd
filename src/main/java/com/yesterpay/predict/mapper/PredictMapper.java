@@ -13,4 +13,5 @@ public interface PredictMapper {
     int insertPredictResult(PredictResult predictResult);
     List<PredictResult> selectPredictHistoryThisWeek(Long memberId);
     int selectPredictSuccessCountThisWeek(Long memberId);
+    List<Long> selectMemberListByDateWithPredictSuccess(String date);
 }

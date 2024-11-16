@@ -54,10 +54,17 @@ public class PredictService {
         return successCount;
     }
 
-    // 매일 8:00에 어제의 모든 예측들을 확인한 후, 이 함수를 호출해야함.
-    public int sendPredictSuccessNotification(Long memberId) {
-        String today = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-        int insertCount = notificationService.sendNotification(memberId, today + "의 히든 글자 예측 성공 !", 1, null);
-        return insertCount;
+    // 매일 8:00에 이 함수를 호출해야함.
+    @Transactional
+    public int checkYesterdayPredictSuccess() {
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        String message = yesterday.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) + "에 히든 글자 예측 성공! 글자를 획득하세요!";
+
+        List<Long> memberList = predictMapper.selectMemberListByDateWithPredictSuccess(yesterday.toString());
+        for (Long memberId : memberList) {
+            notificationService.sendNotification(memberId, message, 1, null);
+        }
+
+        return memberList.size();
     }
 }
