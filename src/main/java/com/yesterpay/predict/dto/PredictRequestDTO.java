@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class PredictDTO {
+public class PredictRequestDTO {
     private Long memberId;
     private Character letter;
 }

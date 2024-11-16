@@ -1,6 +1,6 @@
 package com.yesterpay.predict.controller;
 
-import com.yesterpay.predict.dto.PredictDTO;
+import com.yesterpay.predict.dto.PredictRequestDTO;
 import com.yesterpay.predict.service.PredictService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,8 +26,8 @@ public class PredictController {
     }
 
     @PostMapping("/predict/choose")
-    public ResponseEntity<Void> predict(@RequestBody PredictDTO predictDTO) {
-        predictService.predict(predictDTO);
+    public ResponseEntity<Void> predict(@RequestBody PredictRequestDTO predictRequestDTO) {
+        predictService.predict(predictRequestDTO);
         return ResponseEntity.ok().build();
     }
 }
