@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yesterpay.predict.mapper.PredictMapper">
+
+    <select id="selectTodayPredictLetterCandidate" resultType="java.lang.Character">
+        select letter
+        from predict_letter
+        where date = CURDATE()
+    </select>
+
+    <select id="selectTodayHiddenLetter" resultType="com.yesterpay.predict.dto.HiddenLetter">
+        select hidden_letter_id, date, letter
+        from hidden_letter
+        where date = CURDATE()
+    </select>
+
+    <insert id="insertPredictSuccess">
+        insert into predict_success (member_id, hidden_letter_id)
+        values (#{memberId}, #{hiddenLetterId})
+    </insert>
+
+    <select id="selectHiddenLetterByLetter" resultType="com.yesterpay.predict.dto.HiddenLetter">
+        select hidden_letter_id, date, letter
+        from hidden_letter
+        where date = CURDATE() and letter = #{letter}
+    </select>
+
+</mapper>
