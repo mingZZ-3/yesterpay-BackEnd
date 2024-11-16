@@ -11,5 +11,5 @@ public interface PredictMapper {
     List<Character> selectPredictLetterCandidateByDateRange(String startDate, String endDate);
     List<HiddenLetter> selectHiddenLetterByDateRange(String startDate, String endDate);
     int insertPredictResult(PredictResult predictResult);
-    List<PredictResult> selectPredictHistoryWeekly(Long memberId);
+    List<PredictResult> selectPredictHistoryThisWeek(Long memberId);
 }

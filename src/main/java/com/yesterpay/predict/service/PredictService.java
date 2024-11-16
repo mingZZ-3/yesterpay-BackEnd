@@ -41,12 +41,8 @@ public class PredictService {
         predictMapper.insertPredictResult(predictResult);
     }
 
-    public List<PredictResult> getPredictHistoryWeekly(Long memberId) {
-        List<PredictResult> predictHistory = predictMapper.selectPredictHistoryWeekly(memberId);
-        for (PredictResult predictResult : predictHistory) {
-            predictMapper.
-        }
-
-
+    public List<PredictResult> getPredictHistoryThisWeek(Long memberId) {
+        List<PredictResult> predictResultList = predictMapper.selectPredictHistoryThisWeek(memberId);
+        return predictResultList;
     }
 }

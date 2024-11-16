@@ -1,14 +1,12 @@
 package com.yesterpay.predict.controller;
 
 import com.yesterpay.predict.dto.PredictRequestDTO;
+import com.yesterpay.predict.dto.PredictResult;
 import com.yesterpay.predict.service.PredictService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +27,11 @@ public class PredictController {
     public ResponseEntity<Void> predict(@RequestBody PredictRequestDTO predictRequestDTO) {
         predictService.predict(predictRequestDTO);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/predict/history/this-week")
+    public ResponseEntity<List<PredictResult>> predictHistoryThisWeek(@RequestParam Long memberId) {
+        List<PredictResult> predictHistoryList = predictService.getPredictHistoryThisWeek(memberId);
+        return ResponseEntity.ok(predictHistoryList);
     }
 }
