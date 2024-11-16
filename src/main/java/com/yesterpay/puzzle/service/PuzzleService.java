@@ -1,5 +1,6 @@
 package com.yesterpay.puzzle.service;
 
+import com.yesterpay.notification.dto.Notification;
 import com.yesterpay.puzzle.dto.PuzzleBoard;
 import com.yesterpay.puzzle.dto.PuzzleBoardVO;
 import com.yesterpay.puzzle.dto.PuzzleHint;
@@ -178,6 +179,7 @@ public class PuzzleService {
         if (necessaryChars.isEmpty()) {
             SuggestPuzzle updatedPuzzle = mapper.getSuggestWordById(suggestPuzzle.getProposalWordId());
             mapper.updatePuzzleStatus(updatedPuzzle);
+            checkPuzzleCompletion(suggestPuzzle.getPuzzleTeamId());
         }
 
         return 1;
@@ -185,5 +187,37 @@ public class PuzzleService {
 
     public int getCompletionRate(Long teamId) {
         return mapper.getCompletionRate(teamId);
+    }
+
+    public void checkPuzzleCompletion(Long teamId) {
+        if (getCompletionRate(teamId) != 100)
+            return;
+
+        List<PuzzleBoardVO> words = mapper.getWordStatus(teamId);
+        List<Long> memberIds = mapper.getTeamMemberId(teamId);
+
+        for (PuzzleBoardVO word : words) {
+            if (!word.getWord().equals(word.getSubmitWord())) {
+                // 답과 틀린 단어가 있음
+                for (Long memberId : memberIds) {
+                    Notification noti = new Notification();
+                    noti.setType(1);
+                    noti.setContent("십자말에 틀린 답이 있어요. 팀원들과 다시 확인해보세요 !");
+                    noti.setMemberId(memberId);
+                    mapper.sendPuzzleAlarm(noti);
+                }
+                return;
+            }
+        }
+
+        // 십자말 완성
+        for (Long memberId : memberIds) {
+            Notification noti = new Notification();
+            noti.setType(1);
+            noti.setContent("십자말을 성공적으로 마무리 했습니다! 다음 게임을 위해 팀원들과 준비해보세요 :-)");
+            noti.setMemberId(memberId);
+            mapper.sendPuzzleAlarm(noti);
+        }
+        return;
     }
 }

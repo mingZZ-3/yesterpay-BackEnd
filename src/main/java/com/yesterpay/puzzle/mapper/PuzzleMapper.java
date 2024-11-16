@@ -1,5 +1,6 @@
 package com.yesterpay.puzzle.mapper;
 
+import com.yesterpay.notification.dto.Notification;
 import com.yesterpay.puzzle.dto.PuzzleBoardVO;
 import com.yesterpay.puzzle.dto.SuggestPuzzle;
 import org.apache.ibatis.annotations.Mapper;
@@ -24,4 +25,8 @@ public interface PuzzleMapper {
     int submitChar(SuggestPuzzle suggestPuzzle);
     int updatePuzzleStatus(SuggestPuzzle suggestPuzzle);
     int getCompletionRate(Long teamId);
+
+    List<PuzzleBoardVO> getWordStatus(Long teamId);
+    int sendPuzzleAlarm(Notification noti);
+    List<Long> getTeamMemberId(Long teamId);
 }
