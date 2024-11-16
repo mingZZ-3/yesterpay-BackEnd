@@ -32,10 +32,10 @@ public class CombinationService {
         return mapper.getCombiCnt(combination.getMemberId());
     }
 
-    public List<String> updateLetters(Long memberId, Combination combination) {
+    public List<Character> updateLetters(Long memberId, Combination combination) {
         // 추가할 단어가 기존에 있는지 없는지 확인
         List<Long> newLetters = new ArrayList<>();
-        for (String n : combination.getNewLetters()) {
+        for (Character n : combination.getNewLetters()) {
             Long hiddenId = mapper.findLetter(n);
             if (hiddenId == null) {
                 // DB에 없는 단어인 경우
@@ -46,7 +46,7 @@ public class CombinationService {
             }
         }
 
-        List<String> myletters = mapper.selectLetterList(memberId);
+        List<Character> myletters = mapper.selectLetterList(memberId);
         // 단순 획득
         if (combination.getExistingLetters() == null || combination.getExistingLetters().isEmpty()) {
             // 보유글자가 6개 이상인데, 버릴 글자를 넘겨받지 못했을 때
@@ -74,7 +74,7 @@ public class CombinationService {
                 return null;
             }
 
-            for (String n : combination.getExistingLetters()) {
+            for (Character n : combination.getExistingLetters()) {
                 // 지우려는 글자가 보유한 글자가 아닌 경우
                 if (!myletters.contains(n))
                     return null;
