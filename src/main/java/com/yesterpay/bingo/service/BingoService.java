@@ -3,6 +3,8 @@ package com.yesterpay.bingo.service;
 import com.yesterpay.bingo.dto.*;
 import com.yesterpay.bingo.mapper.BingoMapper;
 import com.yesterpay.member.mapper.MemberMapper;
+import com.yesterpay.notification.dto.NotificationInsertDTO;
+import com.yesterpay.notification.mapper.NotificationMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ public class BingoService {
 
     private final BingoMapper bingoMapper;
     private final MemberMapper memberMapper;
+    private final NotificationMapper notificationMapper;
 
     public BingoBoardDetailDTO getBingoBoardDetail(Long memberId) {
         BingoBoard bingoBoard = bingoMapper.selectBingoBoard(memberId);
@@ -77,10 +80,19 @@ public class BingoService {
 
         int newBingoCount = calculateBingoCount(bingoBoardDetail.getBingoLetterList());
         if (newBingoCount > existingBingoStatus.getBingoCount()) {                      // 새로운 빙고가 완성된 경우
+            // 빙고 성공 알림 전송
+            NotificationInsertDTO bingoSuccessNotification = new NotificationInsertDTO(memberId, newBingoCount + "빙고 완성 !", 1, null);
+            notificationMapper.insertNotification(bingoSuccessNotification);
+
             // 빙고판 현황의 빙고 개수를 업데이트
             bingoMapper.updateBingoStatus(memberId, bingoBoardDetail.getBingoBoardId(), newBingoCount);
 
+
             if (newBingoCount >= existingBingoStatus.getRequiredBingoCount()) {         // 빙고판 자체를 완성한 경우
+                // 빙고판 완성 알림 전송
+                NotificationInsertDTO bingoBoardSuccessNotification = new NotificationInsertDTO(memberId, "빙고판 완성 !!", 1, null);
+                notificationMapper.insertNotification(bingoBoardSuccessNotification);
+
                 Long nextBingoBoardId = bingoBoardDetail.getBingoBoardId() + 1;
 
                 // 다음 빙고판으로 넘어감(= 빙고판 번호 증가)
@@ -113,11 +125,11 @@ public class BingoService {
                 bingoCount++;
             }
         }
-        // 대각선 검사1
+        // 대각선 검사 \
         if (bingoBoard.get(0).getIsCheck() && bingoBoard.get(4).getIsCheck() && bingoBoard.get(8).getIsCheck()) {
             bingoCount++;
         }
-        // 대각선 검사2
+        // 대각선 검사 /
         if (bingoBoard.get(2).getIsCheck() && bingoBoard.get(4).getIsCheck() && bingoBoard.get(6).getIsCheck()) {
             bingoCount++;
         }

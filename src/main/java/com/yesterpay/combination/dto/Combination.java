@@ -9,8 +9,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Combination {
     private Long memberId;
-    private List<Character> existingLetters;
-    private List<Character> newLetters;
+    private List<Character> existingLetterList;
+    private List<Character> newLetterList;
     private int count;
     private String kakaoHashId;
 }

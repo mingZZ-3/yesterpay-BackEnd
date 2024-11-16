@@ -22,4 +22,10 @@
         is_read = 1
         WHERE notification_id = #{notificationId}
     </update>
+
+    <insert id="insertNotification">
+        insert into notification (member_id, content, is_read, type, created_at, team_member_id)
+        values (#{memberId}, #{content}, false, #{type}, NOW(), #{teamMemberId});
+    </insert>
+
 </mapper>
