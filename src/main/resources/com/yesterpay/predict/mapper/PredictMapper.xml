@@ -26,8 +26,16 @@
         select pr.member_id, pr.date, hl.letter as hidden_letter, pr.letter as predict_letter, pr.is_success
         from predict_result pr
             join hidden_letter hl on pr.date = hl.date
-        where pr.member_id = #{memberId} AND
-            pr.date between DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) AND CURDATE()
+        where pr.member_id = #{memberId}
+            AND pr.date between DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) AND CURDATE()
+    </select>
+
+    <select id="selectPredictSuccessCountThisWeek" resultType="java.lang.Integer">
+        select count(*)
+        from predict_result
+        where member_id = #{memberId}
+            AND is_success = true
+            AND date between DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) AND CURDATE()
     </select>
 
 

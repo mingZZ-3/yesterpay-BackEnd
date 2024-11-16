@@ -45,4 +45,9 @@ public class PredictService {
         List<PredictResult> predictResultList = predictMapper.selectPredictHistoryThisWeek(memberId);
         return predictResultList;
     }
+
+    public int getPredictSuccessCount(Long memberId) {
+        int successCount = predictMapper.selectPredictSuccessCountThisWeek(memberId);
+        return successCount;
+    }
 }

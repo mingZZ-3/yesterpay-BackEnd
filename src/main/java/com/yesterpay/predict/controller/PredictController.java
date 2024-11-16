@@ -34,4 +34,10 @@ public class PredictController {
         List<PredictResult> predictHistoryList = predictService.getPredictHistoryThisWeek(memberId);
         return ResponseEntity.ok(predictHistoryList);
     }
+
+    @GetMapping("/predict/success-count/this-week")
+    public ResponseEntity<Integer> predictSuccessCountThisWeek(@RequestParam Long memberId) {
+        int successCount = predictService.getPredictSuccessCount(memberId);
+        return ResponseEntity.ok(successCount);
+    }
 }
