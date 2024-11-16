@@ -26,8 +26,8 @@ public class PredictController {
     }
 
     @PostMapping("/predict/choose")
-    public ResponseEntity<Boolean> predict(@RequestBody PredictDTO predictDTO) {
-        boolean predictResult = predictService.predict(predictDTO);
-        return ResponseEntity.ok(predictResult);
+    public ResponseEntity<Void> predict(@RequestBody PredictDTO predictDTO) {
+        predictService.predict(predictDTO);
+        return ResponseEntity.ok().build();
     }
 }

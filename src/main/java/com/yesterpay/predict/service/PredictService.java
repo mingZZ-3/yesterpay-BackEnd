@@ -2,12 +2,15 @@ package com.yesterpay.predict.service;
 
 import com.yesterpay.predict.dto.HiddenLetter;
 import com.yesterpay.predict.dto.PredictDTO;
+import com.yesterpay.predict.dto.PredictResult;
 import com.yesterpay.predict.mapper.PredictMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -27,13 +30,15 @@ public class PredictService {
     }
 
     @Transactional
-    public boolean predict(PredictDTO predictDTO) {
+    public void predict(PredictDTO predictDTO) {
         HiddenLetter hiddenLetter = predictMapper.selectHiddenLetterByLetter(predictDTO.getLetter());
+
+        boolean isSuccess = true;
         if(hiddenLetter == null) {      // 예측한 글자가 히든 글자가 아닌 경우
-            return false;
+            isSuccess = false;
         }
 
-        predictMapper.insertPredictSuccess(predictDTO.getMemberId(), hiddenLetter.getHiddenLetterId());
-        return true;
+        PredictResult predictResult = new PredictResult(predictDTO.getMemberId(), LocalDate.now().toString(), predictDTO.getLetter(), isSuccess);
+        predictMapper.insertPredictResult(predictResult);
     }
 }
