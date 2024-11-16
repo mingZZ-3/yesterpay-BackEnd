@@ -37,6 +37,7 @@ public class NotificationService {
     @Transactional
     public int sendNotification(Long memberId, String content, Integer type, Long teamMemberId) {
         NotificationInsertDTO notificationInsertDTO = new NotificationInsertDTO(memberId, content, type, teamMemberId);
-        return notificationMapper.insertNotification(notificationInsertDTO);
+        int insertCount = notificationMapper.insertNotification(notificationInsertDTO);
+        return insertCount;
     }
 }

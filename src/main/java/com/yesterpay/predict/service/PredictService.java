@@ -1,5 +1,6 @@
 package com.yesterpay.predict.service;
 
+import com.yesterpay.notification.service.NotificationService;
 import com.yesterpay.predict.dto.HiddenLetter;
 import com.yesterpay.predict.dto.PredictRequestDTO;
 import com.yesterpay.predict.dto.PredictResult;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -19,6 +21,7 @@ import java.util.List;
 public class PredictService {
 
     private final PredictMapper predictMapper;
+    private final NotificationService notificationService;
 
     public List<Character> getTodayPredictLetterCandidate() {
         List<Character> predictLetterCandidate = predictMapper.selectPredictLetterCandidateByDateRange(LocalDate.now().toString(), LocalDate.now().toString());
@@ -33,7 +36,7 @@ public class PredictService {
         List<HiddenLetter> hiddenLetterList = predictMapper.selectHiddenLetterByDateRange(LocalDate.now().toString(), LocalDate.now().toString());
 
         boolean isSuccess = false;
-        if(hiddenLetterList.get(0).getLetter().equals(predictRequestDTO.getLetter())) {      // 예측한 글자가 히든 글자가 아닌 경우
+        if(hiddenLetterList.get(0).getLetter().equals(predictRequestDTO.getLetter())) {      // 예측에 성공한 경우
             isSuccess = true;
         }
 
@@ -49,5 +52,12 @@ public class PredictService {
     public int getPredictSuccessCount(Long memberId) {
         int successCount = predictMapper.selectPredictSuccessCountThisWeek(memberId);
         return successCount;
+    }
+
+    // 매일 8:00에 어제의 모든 예측들을 확인한 후, 이 함수를 호출해야함.
+    public int sendPredictSuccessNotification(Long memberId) {
+        String today = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        int insertCount = notificationService.sendNotification(memberId, today + "의 히든 글자 예측 성공 !", 1, null);
+        return insertCount;
     }
 }
