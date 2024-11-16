@@ -43,8 +43,8 @@ public class CombinationController {
 
     @PostMapping("/member/{memberId}/letter/new")
     @Operation(summary = "보유 글자 업데이트하기")
-    public ResponseEntity<List<String>> newLetter(@PathVariable("memberId") Long memberId, @RequestBody Combination combination) {
-        List<String> result = service.updateLetters(memberId, combination);
+    public ResponseEntity<List<Character>> newLetter(@PathVariable("memberId") Long memberId, @RequestBody Combination combination) {
+        List<Character> result = service.updateLetters(memberId, combination);
         if (result == null) {
             return ResponseEntity.badRequest().body(result);
         }

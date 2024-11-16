@@ -12,9 +12,9 @@ public interface CombinationMapper {
     int addCombiCnt(Long memberId);
     int subCombiCnt(Long memberId);
     int getCombiCnt(Long memberId);
-    Long findLetter(String letter);
-    Long addLetterInDB(String letter);
+    Long findLetter(Character letter);
+    Long addLetterInDB(Character letter);
     int addLetterToMember(Long letterId, Long memberId);
     int deleteLetter(Long letterId, Long memberId);
-    List<String> selectLetterList(Long memberId);
+    List<Character> selectLetterList(Long memberId);
 }

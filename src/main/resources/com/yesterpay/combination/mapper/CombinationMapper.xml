@@ -35,13 +35,13 @@
         where member_id = #{memberId}
     </select>
 
-    <select id="findLetter" parameterType="string" resultType="long">
+    <select id="findLetter" parameterType="java.lang.Character" resultType="long">
         select hidden_letter_id
         from hidden_letter
         where letter = #{letter}
     </select>
 
-    <insert id="addLetterInDB" parameterType="string">
+    <insert id="addLetterInDB" parameterType="java.lang.Character">
         INSERT INTO hidden_letter
         (letter)
         VALUES
@@ -60,7 +60,7 @@
         WHERE member_id = #{memberId} and hidden_letter_id = #{letterId}
     </delete>
 
-    <select id="selectLetterList" resultType="java.lang.String">
+    <select id="selectLetterList" resultType="java.lang.Character">
         select hl.letter
         from letter_collection lc
                  join hidden_letter hl on lc.hidden_letter_id = hl.hidden_letter_id
