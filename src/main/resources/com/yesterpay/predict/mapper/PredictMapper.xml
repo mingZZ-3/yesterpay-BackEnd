@@ -17,15 +17,9 @@
         where date = CURDATE()
     </select>
 
-    <select id="selectHiddenLetterByLetter" resultType="com.yesterpay.predict.dto.HiddenLetter">
-        select hidden_letter_id, date, letter
-        from hidden_letter
-        where date = CURDATE() and letter = #{letter}
-    </select>
-
     <insert id="insertPredictResult">
         insert into predict_result (member_id, date, letter, is_success)
-        values (#{memberId}, #{date}, #{letter}, #{isSuccess})
+        values (#{memberId}, #{date}, #{predictLetter}, #{isSuccess})
     </insert>
 
 

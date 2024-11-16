@@ -30,14 +30,14 @@ public class PredictService {
 
     @Transactional
     public void predict(PredictRequestDTO predictRequestDTO) {
-        HiddenLetter hiddenLetter = predictMapper.selectHiddenLetterByLetter(predictRequestDTO.getLetter());
+        HiddenLetter hiddenLetter = predictMapper.selectTodayHiddenLetter();
 
         boolean isSuccess = true;
-        if(hiddenLetter == null) {      // 예측한 글자가 히든 글자가 아닌 경우
+        if(hiddenLetter.getLetter() != predictRequestDTO.getLetter()) {      // 예측한 글자가 히든 글자가 아닌 경우
             isSuccess = false;
         }
 
-        PredictResult predictResult = new PredictResult(predictRequestDTO.getMemberId(), LocalDate.now().toString(), predictRequestDTO.getLetter(), isSuccess);
+        PredictResult predictResult = new PredictResult(predictRequestDTO.getMemberId(), LocalDate.now().toString(), hiddenLetter.getLetter(), predictRequestDTO.getLetter(), isSuccess);
         predictMapper.insertPredictResult(predictResult);
     }
 }

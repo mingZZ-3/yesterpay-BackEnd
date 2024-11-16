@@ -10,7 +10,6 @@ import java.util.List;
 public interface PredictMapper {
     List<Character> selectTodayPredictLetterCandidate();
     HiddenLetter selectTodayHiddenLetter();
-    HiddenLetter selectHiddenLetterByLetter(Character letter);
     int insertPredictResult(PredictResult predictResult);
 
 }

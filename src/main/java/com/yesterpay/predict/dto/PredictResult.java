@@ -9,6 +9,7 @@ import lombok.Setter;
 public class PredictResult {
     private Long memberId;
     private String date;
-    private Character letter;
+    private Character hiddenLetter;
+    private Character predictLetter;
     private Boolean isSuccess;
 }
