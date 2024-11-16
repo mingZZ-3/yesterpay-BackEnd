@@ -21,23 +21,32 @@ public class PredictService {
     private final PredictMapper predictMapper;
 
     public List<Character> getTodayPredictLetterCandidate() {
-        List<Character> predictLetterCandidate = predictMapper.selectTodayPredictLetterCandidate();
-        HiddenLetter hiddenLetter = predictMapper.selectTodayHiddenLetter();
-        predictLetterCandidate.add(hiddenLetter.getLetter());
+        List<Character> predictLetterCandidate = predictMapper.selectPredictLetterCandidateByDateRange(LocalDate.now().toString(), LocalDate.now().toString());
+        List<HiddenLetter> hiddenLetterList = predictMapper.selectHiddenLetterByDateRange(LocalDate.now().toString(), LocalDate.now().toString());
+        predictLetterCandidate.add(hiddenLetterList.get(0).getLetter());
 
         return predictLetterCandidate;
     }
 
     @Transactional
     public void predict(PredictRequestDTO predictRequestDTO) {
-        HiddenLetter hiddenLetter = predictMapper.selectTodayHiddenLetter();
+        List<HiddenLetter> hiddenLetterList = predictMapper.selectHiddenLetterByDateRange(LocalDate.now().toString(), LocalDate.now().toString());
 
-        boolean isSuccess = true;
-        if(hiddenLetter.getLetter() != predictRequestDTO.getLetter()) {      // 예측한 글자가 히든 글자가 아닌 경우
-            isSuccess = false;
+        boolean isSuccess = false;
+        if(hiddenLetterList.get(0).getLetter().equals(predictRequestDTO.getLetter())) {      // 예측한 글자가 히든 글자가 아닌 경우
+            isSuccess = true;
         }
 
-        PredictResult predictResult = new PredictResult(predictRequestDTO.getMemberId(), LocalDate.now().toString(), hiddenLetter.getLetter(), predictRequestDTO.getLetter(), isSuccess);
+        PredictResult predictResult = new PredictResult(predictRequestDTO.getMemberId(), LocalDate.now().toString(), hiddenLetterList.get(0).getLetter(), predictRequestDTO.getLetter(), isSuccess);
         predictMapper.insertPredictResult(predictResult);
+    }
+
+    public List<PredictResult> getPredictHistoryWeekly(Long memberId) {
+        List<PredictResult> predictHistory = predictMapper.selectPredictHistoryWeekly(memberId);
+        for (PredictResult predictResult : predictHistory) {
+            predictMapper.
+        }
+
+
     }
 }

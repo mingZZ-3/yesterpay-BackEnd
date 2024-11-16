@@ -5,22 +5,29 @@
 
 <mapper namespace="com.yesterpay.predict.mapper.PredictMapper">
 
-    <select id="selectTodayPredictLetterCandidate" resultType="java.lang.Character">
+    <select id="selectPredictLetterCandidateByDateRange" resultType="java.lang.Character">
         select letter
         from predict_letter
-        where date = CURDATE()
+        where date between #{startDate} and #{endDate}
     </select>
 
-    <select id="selectTodayHiddenLetter" resultType="com.yesterpay.predict.dto.HiddenLetter">
+    <select id="selectHiddenLetterByDateRange" resultType="com.yesterpay.predict.dto.HiddenLetter">
         select hidden_letter_id, date, letter
         from hidden_letter
-        where date = CURDATE()
+        where date between #{startDate} and #{endDate}
     </select>
 
     <insert id="insertPredictResult">
         insert into predict_result (member_id, date, letter, is_success)
         values (#{memberId}, #{date}, #{predictLetter}, #{isSuccess})
     </insert>
+
+    <select id="selectPredictHistoryWeekly" resultType="com.yesterpay.predict.dto.PredictResult">
+        select member_id, date, letter, is_success
+        from predict_result
+        where member_id = #{memberId}
+          and date >= CURDATE() - INTERVAL 7 DAY
+    </select>
 
 
 </mapper>

@@ -8,8 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface PredictMapper {
-    List<Character> selectTodayPredictLetterCandidate();
-    HiddenLetter selectTodayHiddenLetter();
+    List<Character> selectPredictLetterCandidateByDateRange(String startDate, String endDate);
+    List<HiddenLetter> selectHiddenLetterByDateRange(String startDate, String endDate);
     int insertPredictResult(PredictResult predictResult);
-
+    List<PredictResult> selectPredictHistoryWeekly(Long memberId);
 }
