@@ -5,6 +5,7 @@ import com.yesterpay.bingo.mapper.BingoMapper;
 import com.yesterpay.member.mapper.MemberMapper;
 import com.yesterpay.notification.dto.NotificationInsertDTO;
 import com.yesterpay.notification.mapper.NotificationMapper;
+import com.yesterpay.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class BingoService {
 
     private final BingoMapper bingoMapper;
     private final MemberMapper memberMapper;
-    private final NotificationMapper notificationMapper;
+    private final NotificationService notificationService;
 
     public BingoBoardDetailDTO getBingoBoardDetail(Long memberId) {
         BingoBoard bingoBoard = bingoMapper.selectBingoBoard(memberId);
@@ -81,8 +82,7 @@ public class BingoService {
         int newBingoCount = calculateBingoCount(bingoBoardDetail.getBingoLetterList());
         if (newBingoCount > existingBingoStatus.getBingoCount()) {                      // 새로운 빙고가 완성된 경우
             // 빙고 성공 알림 전송
-            NotificationInsertDTO bingoSuccessNotification = new NotificationInsertDTO(memberId, newBingoCount + "빙고 완성 !", 1, null);
-            notificationMapper.insertNotification(bingoSuccessNotification);
+            notificationService.sendNotification(memberId, newBingoCount + "빙고 완성 !", 1, null);
 
             // 빙고판 현황의 빙고 개수를 업데이트
             bingoMapper.updateBingoStatus(memberId, bingoBoardDetail.getBingoBoardId(), newBingoCount);
@@ -90,8 +90,7 @@ public class BingoService {
 
             if (newBingoCount >= existingBingoStatus.getRequiredBingoCount()) {         // 빙고판 자체를 완성한 경우
                 // 빙고판 완성 알림 전송
-                NotificationInsertDTO bingoBoardSuccessNotification = new NotificationInsertDTO(memberId, "빙고판 완성 !!", 1, null);
-                notificationMapper.insertNotification(bingoBoardSuccessNotification);
+                notificationService.sendNotification(memberId, "빙고판 완성 !!", 1, null);
 
                 Long nextBingoBoardId = bingoBoardDetail.getBingoBoardId() + 1;
 
