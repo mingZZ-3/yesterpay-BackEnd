@@ -1,6 +1,7 @@
 package com.yesterpay.notification.service;
 
 import com.yesterpay.notification.dto.Notification;
+import com.yesterpay.notification.dto.NotificationInsertDTO;
 import com.yesterpay.notification.mapper.NotificationMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,6 @@ import java.util.List;
 public class NotificationService {
 
     private final NotificationMapper notificationMapper;
-
 
     @Transactional(readOnly = true)
     public Integer getUnreadNotificationCount(Long memberId) {
@@ -32,5 +32,12 @@ public class NotificationService {
         }
 
         return notificationList;
+    }
+
+    @Transactional
+    public int sendNotification(Long memberId, String content, Integer type, Long teamMemberId) {
+        NotificationInsertDTO notificationInsertDTO = new NotificationInsertDTO(memberId, content, type, teamMemberId);
+        int insertCount = notificationMapper.insertNotification(notificationInsertDTO);
+        return insertCount;
     }
 }

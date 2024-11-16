@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yesterpay.predict.mapper.PredictMapper">
+
+    <select id="selectPredictLetterCandidateByDateRange" resultType="java.lang.Character">
+        select letter
+        from predict_letter
+        where date between #{startDate} and #{endDate}
+    </select>
+
+    <select id="selectHiddenLetterByDateRange" resultType="com.yesterpay.predict.dto.HiddenLetter">
+        select hidden_letter_id, date, letter
+        from hidden_letter
+        where date between #{startDate} and #{endDate}
+    </select>
+
+    <insert id="insertPredictResult">
+        insert into predict_result (member_id, date, letter, is_success)
+        values (#{memberId}, #{date}, #{predictLetter}, #{isSuccess})
+    </insert>
+
+    <select id="selectPredictHistoryThisWeek" resultType="com.yesterpay.predict.dto.PredictResult">
+        select pr.member_id, pr.date, hl.letter as hidden_letter, pr.letter as predict_letter, pr.is_success
+        from predict_result pr
+            join hidden_letter hl on pr.date = hl.date
+        where pr.member_id = #{memberId}
+            AND pr.date between DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) AND CURDATE()
+    </select>
+
+    <select id="selectPredictSuccessCountThisWeek" resultType="java.lang.Integer">
+        select count(*)
+        from predict_result
+        where member_id = #{memberId}
+            AND is_success = true
+            AND date between DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) AND CURDATE()
+    </select>
+
+    <select id="selectMemberListByDateWithPredictSuccess" resultType="java.lang.Long">
+        select member_id
+        from predict_result
+        where date = #{date} and is_success = true
+    </select>
+
+
+</mapper>
