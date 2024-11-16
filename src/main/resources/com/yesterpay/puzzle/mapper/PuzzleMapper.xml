@@ -118,4 +118,39 @@
                 WHERE pt.puzzle_team_id = #{teamId}
             )
     </select>
+
+    <select id="getWordStatus" parameterType="long" resultType="com.yesterpay.puzzle.dto.PuzzleBoardVO">
+        SELECT
+            ps.is_checked, ps.submit_word, pw.word
+        FROM
+            puzzle_word AS pw
+                LEFT JOIN
+            puzzle_status AS ps
+            ON pw.word_id = ps.word_id AND ps.puzzle_team_id = #{teamId}
+        WHERE
+            pw.crossword_id = (
+                SELECT pt.crossword_id
+                FROM puzzle_team AS pt
+                WHERE pt.puzzle_team_id = #{teamId}
+            )
+    </select>
+
+    <insert id="sendPuzzleAlarm" parameterType="com.yesterpay.notification.dto.Notification">
+        INSERT INTO notification
+            (member_id, content, type)
+        VALUES
+            (#{memberId}, #{content}, #{type})
+    </insert>
+
+    <select id="getTeamMemberId" parameterType="long" resultType="long">
+        SELECT
+            m.member_id,
+            m.nick_name
+        FROM
+            puzzle_team_member AS pm
+                JOIN
+            member AS m ON pm.member_id = m.member_id
+        WHERE
+            pm.puzzle_team_id = #{teamId} AND pm.approve = 1;
+    </select>
 </mapper>

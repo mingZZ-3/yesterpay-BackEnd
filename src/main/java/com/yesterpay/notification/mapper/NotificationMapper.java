@@ -9,4 +9,5 @@ import java.util.List;
 public interface NotificationMapper {
     Integer selectUnreadNotificationCount(Long memberId);
     List<Notification> selectNotificationList(Long memberId);
+    int updateNotification(Long notificationId);
 }

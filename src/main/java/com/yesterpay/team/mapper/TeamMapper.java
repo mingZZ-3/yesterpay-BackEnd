@@ -1,6 +1,7 @@
 package com.yesterpay.team.mapper;
 
 import com.yesterpay.member.dto.Member;
+import com.yesterpay.notification.dto.Notification;
 import com.yesterpay.team.dto.Team;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,5 +22,8 @@ public interface TeamMapper {
 
     Member getMemberById(Long memberId);
     int updateUser(Long teamId, Long memberId);
-    int insertAlarm(Long memberId);
+
+    int sendAlarmToMaster(Notification noti);
+    int sendAlarmToMember(Notification noti);
+    Long getTeamById(Long teamId);
 }
