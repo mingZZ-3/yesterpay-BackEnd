@@ -39,6 +39,7 @@
         select hidden_letter_id
         from hidden_letter
         where letter = #{letter}
+        LIMIT 1
     </select>
 
     <insert id="addLetterInDB" parameterType="java.lang.Character">
