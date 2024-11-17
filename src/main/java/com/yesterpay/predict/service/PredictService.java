@@ -24,23 +24,23 @@ public class PredictService {
     private final NotificationService notificationService;
 
     public List<Character> getTodayPredictLetterCandidate() {
-        List<Character> predictLetterCandidate = predictMapper.selectPredictLetterCandidateByDateRange(LocalDate.now().toString(), LocalDate.now().toString());
-        List<HiddenLetter> hiddenLetterList = predictMapper.selectHiddenLetterByDateRange(LocalDate.now().toString(), LocalDate.now().toString());
-        predictLetterCandidate.add(hiddenLetterList.get(0).getLetter());
+        List<Character> predictLetterCandidate = predictMapper.selectTodayPredictCandidate();
+        HiddenLetter hiddenLetter = predictMapper.selectTodayHiddenLetter();
+        predictLetterCandidate.add(hiddenLetter.getLetter());
 
         return predictLetterCandidate;
     }
 
     @Transactional
     public void predict(PredictRequestDTO predictRequestDTO) {
-        List<HiddenLetter> hiddenLetterList = predictMapper.selectHiddenLetterByDateRange(LocalDate.now().toString(), LocalDate.now().toString());
+        HiddenLetter hiddenLetter = predictMapper.selectTodayHiddenLetter();
 
         boolean isSuccess = false;
-        if(hiddenLetterList.get(0).getLetter().equals(predictRequestDTO.getLetter())) {      // 예측에 성공한 경우
+        if(hiddenLetter.getLetter().equals(predictRequestDTO.getLetter())) {      // 예측에 성공한 경우
             isSuccess = true;
         }
 
-        PredictResult predictResult = new PredictResult(predictRequestDTO.getMemberId(), LocalDate.now().toString(), hiddenLetterList.get(0).getLetter(), predictRequestDTO.getLetter(), isSuccess);
+        PredictResult predictResult = new PredictResult(predictRequestDTO.getMemberId(), LocalDate.now().toString(), hiddenLetter.getLetter(), predictRequestDTO.getLetter(), isSuccess);
         predictMapper.insertPredictResult(predictResult);
     }
 
