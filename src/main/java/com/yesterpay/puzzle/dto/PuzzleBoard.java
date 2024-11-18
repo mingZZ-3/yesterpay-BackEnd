@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PuzzleBoard {
     private Long wordId;
-    private int x;
-    private int y;
-    private String letter;
+    private int[] start;
+    private String teamWord;
+    private String answer;
     private boolean isCheck;
     private int no;
     private String orientation;
