@@ -58,7 +58,11 @@ public class CombinationService {
         // 단순 획득
         if (combination.getExistingLetterList() == null || combination.getExistingLetterList().isEmpty()) {
             // 보유글자가 6개 이상인데, 버릴 글자를 넘겨받지 못했을 때
-            if (myletters.size() > 5)
+            if (myletters.size() >= 6)
+                return null;
+
+            // 단순 획득 시에는, 2개 이상의 글자를 한번에 얻을 수 없음.
+            if (newLetters.size() > 1)
                 return null;
 
             mapper.addLetterToMember(newLetters.get(0), memberId);
@@ -74,13 +78,17 @@ public class CombinationService {
             if (!myletters.contains(combination.getExistingLetterList().get(0)))
                 return null;
 
+            // 글자 교환의 경우, 무조건 1개의 글자와 1개의 글자를 교환해야함.
+            if (newLetters.size() != 1)
+                return null;
+
            Long delLetId = mapper.findLetter(combination.getExistingLetterList().get(0));
            mapper.deleteLetter(delLetId, memberId);
            mapper.addLetterToMember(newLetters.get(0), memberId);
             // todo : 빙고판 체크하기
         }
         // 글자 조합
-        else if (combination.getExistingLetterList().size() == 2){
+        else if (combination.getExistingLetterList().size() == 2) {
             if (mapper.getCombiCnt(memberId) == 0) {
                 // 조합권 없음
                 return null;
@@ -101,6 +109,10 @@ public class CombinationService {
 
             mapper.subCombiCnt(memberId);
             // todo : 빙고판 체크하기
+        }
+        // 삭제할 글자가 2개를 초과할 수 없음.
+        else {
+            return null;
         }
 
         // 획득한 글자를 바탕으로 빙고 체크하기
