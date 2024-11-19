@@ -91,10 +91,15 @@ public class PuzzleService {
     }
 
     public List<SuggestPuzzle> getSuggestWords(Long teamId) {
-        List<SuggestPuzzle> suggestPuzzles = mapper.getSuggestWords(teamId);
-        for (SuggestPuzzle suggestPuzzle : suggestPuzzles) {
-            suggestPuzzle.setSubmitList(mapper.getSubmittedChars(suggestPuzzle.getProposalWordId()));
-            suggestPuzzle.setNecessaryList(mapper.getNecessaryChars(suggestPuzzle.getProposalWordId()));
+        List<SuggestPuzzle> result = mapper.getSuggestWords(teamId);
+        List<SuggestPuzzle> suggestPuzzles = new ArrayList<>();
+        for (SuggestPuzzle data : result) {
+            data.setNecessaryList(mapper.getNecessaryChars(data.getProposalWordId()));
+            if (data.getNecessaryList().size() == 0)
+                continue;
+
+            data.setSubmitList(mapper.getSubmittedChars(data.getProposalWordId()));
+            suggestPuzzles.add(data);
         }
         return suggestPuzzles;
     }
