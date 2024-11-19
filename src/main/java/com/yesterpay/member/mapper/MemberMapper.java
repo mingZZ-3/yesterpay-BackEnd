@@ -1,5 +1,6 @@
 package com.yesterpay.member.mapper;
 
+import com.yesterpay.member.dto.HiddenLetterIncludeResult;
 import com.yesterpay.member.dto.LoginRequestDTO;
 import com.yesterpay.member.dto.Member;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,4 +14,6 @@ public interface MemberMapper {
     List<Character> selectLetterList(Long memberId);
     void increaseBingoMissionId(Long memberId);
     void increaseBingoBoardId(Long memberId);
+    List<Long> selectMemberListByDateWithIncludeHiddenLetter(String startDateTime, String endDateTime);
+    HiddenLetterIncludeResult selectHiddenLetterIncludeResult(Long memberId, String date);
 }

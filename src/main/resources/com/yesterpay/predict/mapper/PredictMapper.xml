@@ -5,16 +5,16 @@
 
 <mapper namespace="com.yesterpay.predict.mapper.PredictMapper">
 
-    <select id="selectPredictLetterCandidateByDateRange" resultType="java.lang.Character">
+    <select id="selectTodayPredictCandidate" resultType="java.lang.Character">
         select letter
         from predict_letter
-        where date between #{startDate} and #{endDate}
+        where date = CURDATE()
     </select>
 
-    <select id="selectHiddenLetterByDateRange" resultType="com.yesterpay.predict.dto.HiddenLetter">
+    <select id="selectTodayHiddenLetter" resultType="com.yesterpay.predict.dto.HiddenLetter">
         select hidden_letter_id, date, letter
         from hidden_letter
-        where date between #{startDate} and #{endDate}
+        where date = CURDATE()
     </select>
 
     <insert id="insertPredictResult">

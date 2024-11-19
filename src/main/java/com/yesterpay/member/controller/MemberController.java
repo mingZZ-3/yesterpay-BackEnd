@@ -19,12 +19,18 @@ public class MemberController {
     @GetMapping("/member/{id}")
     public ResponseEntity<Member> memberInfo(@PathVariable("id") Long memberId) {
         Member member = memberService.findOne(memberId);
+        if(member == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
         return ResponseEntity.ok().body(member);
     }
 
     @PostMapping("/member/login")
     public ResponseEntity<Long> login(@RequestBody LoginRequestDTO loginRequestDTO) {
         Long memberId = memberService.findOneByIdAndPw(loginRequestDTO);
+        if(memberId == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
         return ResponseEntity.ok().body(memberId);
     }
 
@@ -34,6 +40,10 @@ public class MemberController {
         return ResponseEntity.ok().body(letterList);
     }
 
-
+    @GetMapping("/member/{id}/payment/is-include-hidden-letter")
+    public ResponseEntity<HiddenLetterIncludeResult> isIncludePayment(@PathVariable("id") Long memberId, @RequestParam String date) {
+        HiddenLetterIncludeResult hiddenLetterIncludeResult = memberService.getHiddenLetterIncludeResult(memberId, date);
+        return ResponseEntity.ok().body(hiddenLetterIncludeResult);
+    }
 
 }
