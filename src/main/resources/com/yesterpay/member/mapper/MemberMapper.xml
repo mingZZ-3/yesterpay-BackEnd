@@ -35,4 +35,21 @@
         where member_id = #{memberId}
     </update>
 
+    <select id="selectMemberListByDateWithIncludeHiddenLetter" resultType="java.lang.Long">
+        select DISTINCT member_id
+        from payment
+        where pay_date BETWEEN #{startDateTime} and #{endDateTime}
+          and is_include_hidden_letter = true
+    </select>
+
+    <select id="selectHiddenLetterIncludeResult"
+            resultType="com.yesterpay.member.dto.HiddenLetterIncludeResult">
+        select DISTINCT letter
+        from payment p
+            join hidden_letter hl on DATE(p.pay_date) = hl.date
+        where is_include_hidden_letter = true
+            and member_id = #{memberId}
+            and DATE(pay_date) = #{date}
+    </select>
+
 </mapper>

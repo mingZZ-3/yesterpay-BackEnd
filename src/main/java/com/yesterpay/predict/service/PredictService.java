@@ -54,7 +54,7 @@ public class PredictService {
         return successCount;
     }
 
-    // 매일 8:00에 이 함수를 호출해야함.
+    // 매일 9:00에 이 함수를 호출해야함.(히든 글자가 9시에 공개되므로)
     @Transactional
     public int checkYesterdayPredictSuccess() {
         LocalDate yesterday = LocalDate.now().minusDays(1);
