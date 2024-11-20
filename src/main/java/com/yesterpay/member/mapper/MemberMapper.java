@@ -18,4 +18,5 @@ public interface MemberMapper {
     HiddenLetterIncludeResult selectHiddenLetterIncludeResult(Long memberId, String date);
     Character selectCharacter(String date);
     int insertPoint(Member member);
+    int updateCombiCountForAllMember();
 }

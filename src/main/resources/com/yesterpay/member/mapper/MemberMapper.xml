@@ -64,4 +64,9 @@
             point = point + #{point}
         WHERE member_id = #{memberId}
     </update>
+
+    <update id="updateCombiCountForAllMember">
+        UPDATE member
+        SET combi_count = combi_count + 1;
+    </update>
 </mapper>
