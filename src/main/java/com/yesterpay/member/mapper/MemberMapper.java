@@ -17,4 +17,5 @@ public interface MemberMapper {
     List<Long> selectMemberListByDateWithIncludeHiddenLetter(String startDateTime, String endDateTime);
     HiddenLetterIncludeResult selectHiddenLetterIncludeResult(Long memberId, String date);
     Character selectCharacter(String date);
+    int insertPoint(Member member);
 }
