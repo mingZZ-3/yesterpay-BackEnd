@@ -27,7 +27,8 @@
         from predict_result pr
             join hidden_letter hl on pr.date = hl.date
         where pr.member_id = #{memberId}
-            AND pr.date between DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) AND CURDATE()
+            AND pr.date between DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+                            AND DATE_SUB(CURDATE(), INTERVAL 1 DAY)
     </select>
 
     <select id="selectPredictSuccessCountThisWeek" resultType="java.lang.Integer">
@@ -35,7 +36,8 @@
         from predict_result
         where member_id = #{memberId}
             AND is_success = true
-            AND date between DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY) AND CURDATE()
+            AND date between DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+                            AND DATE_SUB(CURDATE(), INTERVAL 1 DAY)
     </select>
 
     <select id="selectMemberListByDateWithPredictSuccess" resultType="java.lang.Long">
