@@ -43,7 +43,7 @@ public class BingoService {
     public int checkBingoByLetterList(BingoCheckByLetterListDTO bingoCheckByLetterListDTO) {
         int changedCount = bingoMapper.updateBingoCellByLetterList(bingoCheckByLetterListDTO);
 
-        // 빙고 완성 유무 판단 및 처리
+        // 빙고와 빙고판 완성 유무 판단 및 처리
         isBingoCompleted(bingoCheckByLetterListDTO.getMemberId());
 
         return changedCount;
@@ -60,8 +60,10 @@ public class BingoService {
             bingoMapper.updateBingoCellByIndex(bingoCheckByIndexDTO);
             updatedBingoCell = bingoMapper.selectBingoCell(bingoCheckByIndexDTO.getMemberId(), bingoCheckByIndexDTO.getIndex());
 
-            // 빙고 완성 유무 판단 및 처리
-            isBingoCompleted(bingoCheckByIndexDTO.getMemberId());
+            // 빙고와 빙고판 완성 유무 판단 및 처리
+            int completedResult = isBingoCompleted(bingoCheckByIndexDTO.getMemberId());
+            if(completedResult == 1)
+                updatedBingoCell.setIsBingoBoardFinished(true);
         }
 
         return updatedBingoCell;
@@ -77,7 +79,9 @@ public class BingoService {
         return bingoMission;
     }
 
-    public Boolean isBingoCompleted(Long memberId) {
+    // return 값이
+    // 1 : 빙고가 완성되어 빙고판 완성,  2 : 빙고만 완성,   3 : 아무것도 X
+    public int isBingoCompleted(Long memberId) {
         BingoStatusResponseDTO existingBingoStatus = getBingoStatus(memberId);
         BingoBoardDetailDTO bingoBoardDetail = getBingoBoardDetail(memberId);
 
@@ -88,7 +92,6 @@ public class BingoService {
 
             // 빙고판 현황의 빙고 개수를 업데이트
             bingoMapper.updateBingoStatus(memberId, bingoBoardDetail.getBingoBoardId(), newBingoCount);
-
 
             if (newBingoCount >= existingBingoStatus.getRequiredBingoCount()) {         // 빙고판 자체를 완성한 경우
                 // 빙고판 완성 알림 전송
@@ -106,10 +109,12 @@ public class BingoService {
                 memberService.insertPoint(memberId,20);
 
                 // 멤버 테이블의 빙고판id, 빙고판 현황 테이블의 빙고판id, 빙고 글자 현황 테이블의 빙고글자id들의 일치 여부를 체크?
+
+                return 1;
             }
-            return true;
+            return 2;
         }
-        return false;
+        return 3;
     }
 
     public int calculateBingoCount(List<BingoCellDTO> bingoBoard) {

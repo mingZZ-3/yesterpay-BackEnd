@@ -9,4 +9,5 @@ public class BingoCellDTO {
     private Integer index;
     private Character letter;
     private Boolean isCheck;
+    private Boolean isBingoBoardFinished;
 }

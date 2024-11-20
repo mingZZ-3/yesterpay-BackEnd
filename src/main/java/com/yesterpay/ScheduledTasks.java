@@ -29,4 +29,6 @@ public class ScheduledTasks {
         int sendCount = memberService.checkYesterdayPayment();
     }
 
+    // 매일 오전 9시에 실행
+    public
 }
