@@ -48,6 +48,13 @@ public class PuzzleService {
             puzzleBoard.add(cell);
         }
 
+        // 십자말 성공 시 체크
+        if (checkPuzzleCompletionForBoard(teamId)) {
+            puzzleBoard.get(0).setCompletion(true);
+        } else {
+            puzzleBoard.get(0).setCompletion(false);
+        }
+
         return puzzleBoard;
     }
 
@@ -183,5 +190,22 @@ public class PuzzleService {
             memberService.insertPoint(memberId,50);
         }
         return;
+    }
+
+    public boolean checkPuzzleCompletionForBoard(Long teamId) {
+        if (getCompletionRate(teamId) != 100)
+            return false;
+
+        List<PuzzleBoardVO> words = mapper.getWordStatus(teamId);
+        List<Long> memberIds = mapper.getTeamMemberId(teamId);
+
+        for (PuzzleBoardVO word : words) {
+            if (!word.getWord().equals(word.getSubmitWord())) {
+                // 답과 틀린 단어가 있음
+                return false;
+            }
+        }
+
+        return true;
     }
 }
