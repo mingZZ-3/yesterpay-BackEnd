@@ -77,7 +77,8 @@ public class MemberService {
     }
 
     @Transactional
-    public void increaseCombiCountForAllMember() {
-        memberMapper.updateCombiCountForAllMember();
+    public int increaseCombiCountForAllMember() {
+        int updateCount = memberMapper.updateCombiCountForAllMember();
+        return updateCount;
     }
 }

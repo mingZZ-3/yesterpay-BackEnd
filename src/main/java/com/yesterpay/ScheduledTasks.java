@@ -33,6 +33,6 @@ public class ScheduledTasks {
     @Scheduled(cron = "0 0 9 * * ?", zone = "Asia/Seoul")
     public void increaseCombiCountForAllMember() {
 //        log.info("ccccccccc" + "test!");
-        memberService.increaseCombiCountForAllMember();
+        int updateCount = memberService.increaseCombiCountForAllMember();
     }
 }
