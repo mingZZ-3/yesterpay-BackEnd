@@ -68,10 +68,16 @@ public class MemberService {
         return hiddenLetterIncludeResult;
     }
 
+    @Transactional
     public void insertPoint(Long memberId, int point) {
         Member member = new Member();
         member.setMemberId(memberId);
         member.setPoint(point);
         memberMapper.insertPoint(member);
+    }
+
+    @Transactional
+    public void increaseCombiCountForAllMember() {
+        memberMapper.updateCombiCountForAllMember();
     }
 }

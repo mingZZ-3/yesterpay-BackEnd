@@ -30,5 +30,9 @@ public class ScheduledTasks {
     }
 
     // 매일 오전 9시에 실행
-    public
+    @Scheduled(cron = "0 0 9 * * ?", zone = "Asia/Seoul")
+    public void increaseCombiCountForAllMember() {
+//        log.info("ccccccccc" + "test!");
+        memberService.increaseCombiCountForAllMember();
+    }
 }
