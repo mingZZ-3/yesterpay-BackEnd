@@ -5,11 +5,11 @@
 
 <mapper namespace="com.yesterpay.bingo.mapper.BingoMapper">
     <select id="selectBingoLetterList" resultType="com.yesterpay.bingo.dto.BingoCellDTO">
-        select distinct bl.bingo_letter_id, bl.index, bl.letter, bls.is_check
+        select bl.bingo_letter_id, bl.index, bl.letter, bls.is_check
         from bingo_letter bl
             join bingo_letter_status bls on bl.bingo_letter_id = bls.bingo_letter_id
             join member m on m.bingo_board_id = bl.bingo_board_id
-        where bls.member_id = #{memberId};
+        where m.member_id = #{memberId} and bls.member_id = #{memberId};
     </select>
 
     <select id="selectBingoBoard" resultType="com.yesterpay.bingo.dto.BingoBoard">
@@ -20,47 +20,39 @@
     </select>
 
     <select id="selectBingoStatus" resultType="com.yesterpay.bingo.dto.BingoStatusResponseDTO">
-        select distinct bb.required_bingo_count, bbs.bingo_count
+        select bb.required_bingo_count, bbs.bingo_count
         from bingo_board bb
             join bingo_board_status bbs on bb.bingo_board_id = bbs.bingo_board_id
             join member m on m.bingo_board_id = bb.bingo_board_id
-        where m.member_id = #{memberId};
+        where m.member_id = #{memberId} and bbs.member_id = #{memberId};
     </select>
 
     <update id="updateBingoCellByIndex" parameterType="com.yesterpay.bingo.dto.BingoCheckByIndexDTO">
-        UPDATE bingo_letter_status
-        SET is_check = true
-        WHERE bingo_letter_status_id =
-              (select bingo_letter_status_id
-               from (select distinct bls.bingo_letter_status_id
-                     from bingo_letter_status bls
-                         JOIN bingo_letter bl ON bls.bingo_letter_id = bl.bingo_letter_id
-                         JOIN member m ON m.bingo_board_id = bl.bingo_board_id
-                     WHERE bls.member_id = #{memberId} AND bl.index = #{index}) as t);
+        UPDATE bingo_letter_status bls
+            JOIN bingo_letter bl ON bls.bingo_letter_id = bl.bingo_letter_id
+            JOIN member m ON m.bingo_board_id = bl.bingo_board_id
+            SET bls.is_check = true
+        WHERE m.member_id = #{memberId} AND bls.member_id = #{memberId}
+            AND bl.index = #{index};
     </update>
 
     <update id="updateBingoCellByLetterList" parameterType="com.yesterpay.bingo.dto.BingoCheckByLetterListDTO">
-        update bingo_letter_status
-        set is_check = true
-        where bingo_letter_status_id IN
-            (select bingo_letter_status_id
-             from (select distinct bls.bingo_letter_status_id
-                   from bingo_letter_status bls
-                       JOIN bingo_letter bl ON bls.bingo_letter_id = bl.bingo_letter_id
-                       JOIN member m ON m.bingo_board_id = bl.bingo_board_id
-                   WHERE bls.member_id = #{memberId} AND bl.letter IN
-                                               <foreach collection="letterList" item="letter" open="(" separator="," close=")">
-                                                    #{letter}
-                                               </foreach>) as t);
+        UPDATE bingo_letter_status bls
+            JOIN bingo_letter bl ON bls.bingo_letter_id = bl.bingo_letter_id
+            JOIN member m ON m.bingo_board_id = bl.bingo_board_id
+        SET bls.is_check = true
+        WHERE m.member_id = #{memberId} AND bls.member_id = #{memberId}
+            AND bl.letter IN <foreach collection="letterList" item="letter" open="(" separator="," close=")">
+                                #{letter}
+                             </foreach>;
     </update>
 
-
     <select id="selectBingoCell" resultType="com.yesterpay.bingo.dto.BingoCellDTO">
-        select distinct bl.bingo_letter_id, bl.index, bl.letter, bls.is_check
+        select bl.bingo_letter_id, bl.index, bl.letter, bls.is_check
         from bingo_letter bl
              join bingo_letter_status bls on bl.bingo_letter_id = bls.bingo_letter_id
              join member m on m.bingo_board_id = bl.bingo_board_id
-        where bls.member_id = #{memberId} and bl.index = #{index}
+        where m.member_id = #{memberId} and bls.member_id = #{memberId} and bl.index = #{index}
     </select>
 
     <select id="selectUncheckedBingoLetter" resultType="com.yesterpay.bingo.dto.BingoCellDTO">
@@ -68,7 +60,7 @@
         from bingo_letter bl
              join bingo_letter_status bls on bl.bingo_letter_id = bls.bingo_letter_id
              join member m on m.bingo_board_id = bl.bingo_board_id
-        where bls.member_id = #{memberId} and bls.is_check = false
+        where m.member_id = #{memberId} and bls.member_id = #{memberId} and bls.is_check = false
     </select>
 
     <select id="selectBingoMission" resultType="com.yesterpay.bingo.dto.BingoMission">
@@ -91,10 +83,9 @@
 
     <insert id="insertBingoLetterStatus">
         INSERT INTO bingo_letter_status (member_id, bingo_letter_id, is_check)
-        VALUES
-        <foreach collection="bingoLetterIdList" item="bingoLetterId" separator=",">
-            (#{memberId}, #{bingoLetterId}, false)
-        </foreach>
+        VALUES <foreach collection="bingoLetterIdList" item="bingoLetterId" separator=",">
+                    (#{memberId}, #{bingoLetterId}, false)
+               </foreach>
     </insert>
 
     <select id="selectBingoLetterIdListByBoard" resultType="java.lang.Long">
