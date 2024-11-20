@@ -184,7 +184,7 @@ public class PuzzleService {
         for (Long memberId : memberIds) {
             Notification noti = new Notification();
             noti.setType(1);
-            noti.setContent("십자말을 성공적으로 마무리 했습니다! 다음 게임을 위해 팀원들과 준비해보세요 :-)");
+            noti.setContent("십자말을 성공적으로 마무리 했습니다! 50 포인트리가 지급 됐습니다 :-)");
             noti.setMemberId(memberId);
             mapper.sendPuzzleAlarm(noti);
             memberService.insertPoint(memberId,50);

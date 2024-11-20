@@ -92,7 +92,7 @@ public class BingoService {
 
             if (newBingoCount >= existingBingoStatus.getRequiredBingoCount()) {         // 빙고판 자체를 완성한 경우
                 // 빙고판 완성 알림 전송
-                notificationService.sendNotification(memberId, "빙고판 완성 !!", 1, null);
+                notificationService.sendNotification(memberId, "빙고판 완성 !! 20 포인트리가 지급 됐습니다 :-)", 1, null);
 
                 Long nextBingoBoardId = bingoBoardDetail.getBingoBoardId() + 1;
 
