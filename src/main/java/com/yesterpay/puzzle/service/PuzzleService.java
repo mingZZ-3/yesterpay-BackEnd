@@ -197,7 +197,6 @@ public class PuzzleService {
             return false;
 
         List<PuzzleBoardVO> words = mapper.getWordStatus(teamId);
-        List<Long> memberIds = mapper.getTeamMemberId(teamId);
 
         for (PuzzleBoardVO word : words) {
             if (!word.getWord().equals(word.getSubmitWord())) {
