@@ -4,6 +4,7 @@ import com.yesterpay.bingo.dto.BingoCheckByLetterListDTO;
 import com.yesterpay.bingo.service.BingoService;
 import com.yesterpay.combination.dto.Combination;
 import com.yesterpay.combination.mapper.CombinationMapper;
+import com.yesterpay.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.List;
 public class CombinationService {
     private final CombinationMapper mapper;
     private final BingoService bingoService;
+    private final MemberService memberService;
 
     @Transactional(readOnly = true)
     public boolean hasSharedId(Combination combination) {
@@ -66,7 +68,7 @@ public class CombinationService {
                 return null;
 
             mapper.addLetterToMember(newLetters.get(0), memberId);
-            // todo : 빙고판 체크하기
+            memberService.insertPoint(memberId,10);
         }
         // 글자 교환
         else if (combination.getExistingLetterList().size() == 1){
@@ -85,7 +87,7 @@ public class CombinationService {
            Long delLetId = mapper.findLetter(combination.getExistingLetterList().get(0));
            mapper.deleteLetter(delLetId, memberId);
            mapper.addLetterToMember(newLetters.get(0), memberId);
-            // todo : 빙고판 체크하기
+           memberService.insertPoint(memberId,10);
         }
         // 글자 조합
         else if (combination.getExistingLetterList().size() == 2) {
@@ -108,7 +110,6 @@ public class CombinationService {
             }
 
             mapper.subCombiCnt(memberId);
-            // todo : 빙고판 체크하기
         }
         // 삭제할 글자가 2개를 초과할 수 없음.
         else {

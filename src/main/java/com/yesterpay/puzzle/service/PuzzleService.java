@@ -1,5 +1,7 @@
 package com.yesterpay.puzzle.service;
 
+import com.yesterpay.member.dto.Member;
+import com.yesterpay.member.service.MemberService;
 import com.yesterpay.notification.dto.Notification;
 import com.yesterpay.puzzle.dto.PuzzleBoard;
 import com.yesterpay.puzzle.dto.PuzzleBoardVO;
@@ -18,6 +20,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PuzzleService {
     private final PuzzleMapper mapper;
+    private final MemberService memberService;
 
     public List<PuzzleBoard> getPuzzleBoard(long teamId) {
         // 초기 세팅
@@ -43,6 +46,13 @@ public class PuzzleService {
                 cell.setTeamWord("");
             }
             puzzleBoard.add(cell);
+        }
+
+        // 십자말 성공 시 체크
+        if (checkPuzzleCompletionForBoard(teamId)) {
+            puzzleBoard.get(0).setCompletion(true);
+        } else {
+            puzzleBoard.get(0).setCompletion(false);
         }
 
         return puzzleBoard;
@@ -177,7 +187,25 @@ public class PuzzleService {
             noti.setContent("십자말을 성공적으로 마무리 했습니다! 다음 게임을 위해 팀원들과 준비해보세요 :-)");
             noti.setMemberId(memberId);
             mapper.sendPuzzleAlarm(noti);
+            memberService.insertPoint(memberId,50);
         }
         return;
+    }
+
+    public boolean checkPuzzleCompletionForBoard(Long teamId) {
+        if (getCompletionRate(teamId) != 100)
+            return false;
+
+        List<PuzzleBoardVO> words = mapper.getWordStatus(teamId);
+        List<Long> memberIds = mapper.getTeamMemberId(teamId);
+
+        for (PuzzleBoardVO word : words) {
+            if (!word.getWord().equals(word.getSubmitWord())) {
+                // 답과 틀린 단어가 있음
+                return false;
+            }
+        }
+
+        return true;
     }
 }

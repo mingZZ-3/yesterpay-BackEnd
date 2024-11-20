@@ -3,6 +3,7 @@ package com.yesterpay.bingo.service;
 import com.yesterpay.bingo.dto.*;
 import com.yesterpay.bingo.mapper.BingoMapper;
 import com.yesterpay.member.mapper.MemberMapper;
+import com.yesterpay.member.service.MemberService;
 import com.yesterpay.notification.dto.NotificationInsertDTO;
 import com.yesterpay.notification.mapper.NotificationMapper;
 import com.yesterpay.notification.service.NotificationService;
@@ -22,6 +23,7 @@ public class BingoService {
     private final BingoMapper bingoMapper;
     private final MemberMapper memberMapper;
     private final NotificationService notificationService;
+    private final MemberService memberService;
 
     public BingoBoardDetailDTO getBingoBoardDetail(Long memberId) {
         BingoBoard bingoBoard = bingoMapper.selectBingoBoard(memberId);
@@ -101,6 +103,7 @@ public class BingoService {
                 // 빙고 글자 현황 테이블에 다음 빙고판의 글자들을 insert
                 List<Long> bingoLetterIdList = bingoMapper.selectBingoLetterIdListByBoard(nextBingoBoardId);
                 bingoMapper.insertBingoLetterStatus(memberId, bingoLetterIdList);
+                memberService.insertPoint(memberId,20);
 
                 // 멤버 테이블의 빙고판id, 빙고판 현황 테이블의 빙고판id, 빙고 글자 현황 테이블의 빙고글자id들의 일치 여부를 체크?
             }

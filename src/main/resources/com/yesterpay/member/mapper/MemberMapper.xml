@@ -52,4 +52,16 @@
             and DATE(pay_date) = #{date}
     </select>
 
+    <select id="selectCharacter" parameterType="string" resultType="java.lang.Character">
+        SELECT letter
+        FROM hidden_letter
+        Where date = #{date}
+    </select>
+
+    <update id="insertPoint" parameterType="com.yesterpay.member.dto.Member">
+        UPDATE member
+        SET
+            point = point + #{point}
+        WHERE member_id = #{memberId}
+    </update>
 </mapper>

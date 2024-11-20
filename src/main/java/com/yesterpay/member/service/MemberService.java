@@ -59,6 +59,7 @@ public class MemberService {
         HiddenLetterIncludeResult hiddenLetterIncludeResult = memberMapper.selectHiddenLetterIncludeResult(memberId, date);
         if (hiddenLetterIncludeResult == null) {
             hiddenLetterIncludeResult = new HiddenLetterIncludeResult();
+            hiddenLetterIncludeResult.setLetter(memberMapper.selectCharacter(date));
             hiddenLetterIncludeResult.setIsInclude(false);
         } else {
             hiddenLetterIncludeResult.setIsInclude(true);
@@ -67,4 +68,10 @@ public class MemberService {
         return hiddenLetterIncludeResult;
     }
 
+    public void insertPoint(Long memberId, int point) {
+        Member member = new Member();
+        member.setMemberId(memberId);
+        member.setPoint(point);
+        memberMapper.insertPoint(member);
+    }
 }

@@ -17,4 +17,5 @@ public class PuzzleBoard {
     private int no;
     private String orientation;
     private String clue;
+    private boolean completion;
 }
