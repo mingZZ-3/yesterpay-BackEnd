@@ -76,8 +76,8 @@
         where proposal_word_id = #{proposalId}
     </select>
 
-    <select id="getMyLetters" parameterType="long" resultType="string">
-        SELECT hl.letter
+    <select id="getMyLetters" parameterType="long" resultType="com.yesterpay.puzzle.dto.PuzzleBoardVO">
+        SELECT hl.letter, hl.hidden_letter_id
         FROM hidden_letter AS hl
                  JOIN letter_collection AS lc ON lc.hidden_letter_id = hl.hidden_letter_id
         WHERE lc.member_id = #{memberId}
@@ -153,4 +153,9 @@
         WHERE
             pm.puzzle_team_id = #{teamId} AND pm.approve = 1;
     </select>
+
+    <delete id="removeLetterCollection" parameterType="long">
+        DELETE FROM letter_collection
+        WHERE member_id = #{memberId} and hidden_letter_id = #{hiddenLetterId}
+    </delete>
 </mapper>

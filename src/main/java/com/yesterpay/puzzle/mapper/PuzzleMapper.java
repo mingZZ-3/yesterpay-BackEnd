@@ -20,7 +20,7 @@ public interface PuzzleMapper {
     List<String> getSubmittedChars(Long proposalId);
     List<String> getNecessaryChars(Long proposalId);
 
-    List<String> getMyLetters(Long memberId);
+    List<PuzzleBoardVO> getMyLetters(Long memberId);
     int removeNecessaryChar(SuggestPuzzle suggestPuzzle);
     int submitChar(SuggestPuzzle suggestPuzzle);
     int updatePuzzleStatus(SuggestPuzzle suggestPuzzle);
@@ -29,4 +29,5 @@ public interface PuzzleMapper {
     List<PuzzleBoardVO> getWordStatus(Long teamId);
     int sendPuzzleAlarm(Notification noti);
     List<Long> getTeamMemberId(Long teamId);
+    int removeLetterCollection(Long memberId, Long hiddenLetterId);
 }

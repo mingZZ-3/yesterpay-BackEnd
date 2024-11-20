@@ -11,10 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -107,8 +104,17 @@ public class PuzzleService {
     @Transactional
     public int submitChar(SuggestPuzzle suggestPuzzle) {
         // 유저가 해당 글자를 가지고 있는지 확인
-        List<String> letters = mapper.getMyLetters(suggestPuzzle.getMemberId());
-        if (!letters.contains(suggestPuzzle.getWord())) {
+        List<PuzzleBoardVO> letters = mapper.getMyLetters(suggestPuzzle.getMemberId());
+
+        long hiddenLetterId = -1L;
+        for (PuzzleBoardVO letter : letters) {
+            if (letter.getLetter().equals(suggestPuzzle.getWord())) {
+                hiddenLetterId = letter.getHiddenLetterId();
+            }
+        }
+
+        // 보유한 글자가 아님
+        if (hiddenLetterId == -1L) {
             return -1;
         }
 
@@ -121,8 +127,9 @@ public class PuzzleService {
         // necessary에서 제거하고, submit으로 이동
         int result1 = mapper.removeNecessaryChar(suggestPuzzle);
         int result2 = mapper.submitChar(suggestPuzzle);
+        int result3 = mapper.removeLetterCollection(suggestPuzzle.getMemberId(), hiddenLetterId);
 
-        if (result1 != 1 || result2 != 1) {
+        if (result1 != 1 || result2 != 1 || result3 != 1) {
             return 0;
         }
 

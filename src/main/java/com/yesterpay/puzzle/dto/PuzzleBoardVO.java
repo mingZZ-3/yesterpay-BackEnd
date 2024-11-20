@@ -23,4 +23,6 @@ public class PuzzleBoardVO {
     // 제안 단어
     private Long proposalWordId;
     private char necessaryChar;
+    private Long hiddenLetterId;
+    private String letter;
 }
