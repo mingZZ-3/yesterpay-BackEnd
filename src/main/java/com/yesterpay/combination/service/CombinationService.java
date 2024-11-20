@@ -28,11 +28,11 @@ public class CombinationService {
 
     @Transactional
     public int addCombiCount(Combination combination) {
-        if (hasSharedId(combination)) {
-            return -1;
-        }
+//        if (hasSharedId(combination)) {
+//            return -1;
+//        }
 
-        mapper.addSharedId(combination);
+//        mapper.addSharedId(combination);
         mapper.addCombiCnt(combination.getMemberId());
         return mapper.getCombiCnt(combination.getMemberId());
     }
