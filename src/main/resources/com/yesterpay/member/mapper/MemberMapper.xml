@@ -52,4 +52,9 @@
             and DATE(pay_date) = #{date}
     </select>
 
+    <select id="selectCharacter" parameterType="string" resultType="java.lang.Character">
+        SELECT letter
+        FROM hidden_letter
+        Where date = #{date}
+    </select>
 </mapper>

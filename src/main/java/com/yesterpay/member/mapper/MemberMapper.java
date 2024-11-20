@@ -16,4 +16,5 @@ public interface MemberMapper {
     void increaseBingoBoardId(Long memberId);
     List<Long> selectMemberListByDateWithIncludeHiddenLetter(String startDateTime, String endDateTime);
     HiddenLetterIncludeResult selectHiddenLetterIncludeResult(Long memberId, String date);
+    Character selectCharacter(String date);
 }
