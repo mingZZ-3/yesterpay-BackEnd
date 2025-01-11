@@ -1,35 +1,19 @@
-# YesterPay (KB 해커톤 - BackEnd)
+# YesterPay (KB 해커톤) : 일상에 녹아드는 '한글' 게이미피케이션
 
-- YesterPay의 BackEnd 코드입니다.
+![projectImage](https://github.com/user-attachments/assets/71876ad4-a866-4f0b-a599-872230278ace)
 
 
-# 0️⃣ 진행 방식
-- 커밋메시지 작성에 신경을 씁시다!
-- 매일 22:00에 PR 후 Merge!(추후 변동 가능)
-
-# 1️⃣ commit message 규칙
-
-- Feat:     새로운 기능 추가
-- Fix:      버그 수정
-- Docs:     문서 수정
-- Style:    코드의 의미에 영향을 주지 않는 변경사항 (코드 포매팅, 세미콜론 누락 등)
-- Design:   사용자 UI 디자인 변경 (CSS 등)
-- Refactor: 버그를 수정하거나 기능을 추가하지 않는 코드 변경
-- Perf:     성능을 향상시키는 코드 변경
-- Test:     누락된 테스트 추가 또는 기존 테스트 수정
-- Chore:    빌드 프로세스 또는 보조도구 및 라이프러리 등의 변경
-- Ci:       CI 관련 설정 수정
-- Release:  버젼 릴리즈
-- Rename:   파일 혹은 폴더명을 수정
-- Remove:   파일을 삭제
-
-```shell
-git commit -m "Feat: 유저 검색 기능 추가"
+## 💬 Service Description
+```
+결제 데이터를 기반으로 선정되는 그날의 히든글자를 바탕으로
+십자말, 빙고, 예측 게임을 할 수 있어요!
+혼자서, 팀원들과 협력하며 포인트를 모을 수 있어요 :)
 ```
 
-# 2️⃣ PR 규칙
-## PR 제목
-- 날짜-이름
-- `0922-홍길동`
-## comment 양식
-- 자유 양식
+## 🗂️ ERD
+![스크린샷 2025-01-11 오후 11 34 10](https://github.com/user-attachments/assets/3c1a0b05-605b-4f8e-bebb-84b28cdad720)
+
+## 🛠️ Stack
+* **Languange** : Java
+* **Library & Framewrok** : Spring Boot, MyBatis, Lombok, AWS, Docker, Git Action CI/CD
+* **DB** : AWS RDS, MySQL
