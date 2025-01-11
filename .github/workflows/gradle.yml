@@ -66,7 +66,7 @@ jobs:
 
     # 8. 새로운 컨테이너 실행
     - name: docker run new container
-      run: sudo docker run --rm -it -d -p 80:8080 --name yesterpay-image-release ${{ secrets.DOCKERHUB_USERNAME }}/yesterpay-image-release
+      run: sudo docker run -d -p 8080:8080 --name yesterpay-image-release ${{ secrets.DOCKERHUB_USERNAME }}/yesterpay-image-release
 
     # 9. 이전 도커 이미지 삭제
     - name: delete old docker image
